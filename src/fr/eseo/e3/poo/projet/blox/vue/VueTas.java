@@ -8,6 +8,9 @@ import fr.eseo.e3.poo.projet.blox.modele.Tas;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+/**
+ * Représente graphiquement le tas d’éléments figés dans le puits.
+ */
 public class VueTas {
 
     public static final double MULTIPLIER_NUANCE = 0.3;
@@ -15,6 +18,9 @@ public class VueTas {
     private final Puits puits;
     private int taille;
 
+    /**
+     * Construit une vue du tas pour un puits donné avec une taille de case.
+     */
     public VueTas(Puits puits, int taille) {
         this.puits = puits;
         this.taille = taille;
@@ -28,6 +34,9 @@ public class VueTas {
         this.taille = taille;
     }
 
+    /**
+     * Affiche tous les éléments du tas.
+     */
     public void afficher(Graphics2D g2D) {
         Tas tas = puits.getTas();
         if (tas == null) return;
@@ -37,6 +46,9 @@ public class VueTas {
         }
     }
 
+    /**
+     * Dessine un élément du tas avec une couleur assombrie.
+     */
     private void dessinerElement(Graphics2D g2D, Element e) {
         int x = e.getCoordonnees().getAbscisse() * taille;
         int y = e.getCoordonnees().getOrdonnee() * taille;
@@ -49,15 +61,13 @@ public class VueTas {
         g2D.drawRect(x, y, taille, taille);
     }
 
+    /**
+     * Applique une nuance plus sombre à une couleur (effet d’ombrage).
+     */
     public static Color nuance(Color couleur) {
-        int r = couleur.getRed();
-        int g = couleur.getGreen();
-        int b = couleur.getBlue();
-
-        r = (int)(r * (1 - MULTIPLIER_NUANCE));
-        g = (int)(g * (1 - MULTIPLIER_NUANCE));
-        b = (int)(b * (1 - MULTIPLIER_NUANCE));
-
+        int r = (int) (couleur.getRed() * (1 - MULTIPLIER_NUANCE));
+        int g = (int) (couleur.getGreen() * (1 - MULTIPLIER_NUANCE));
+        int b = (int) (couleur.getBlue() * (1 - MULTIPLIER_NUANCE));
         return new Color(r, g, b);
     }
 }

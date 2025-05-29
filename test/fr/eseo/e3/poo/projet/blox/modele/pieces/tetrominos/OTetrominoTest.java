@@ -8,14 +8,19 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Classe de test JUnit pour le comportement de la pièce OTetromino.
+ */
 public class OTetrominoTest {
 
+    // Vérifie que la pièce contient bien 4 éléments
     @Test
     public void testNombreDElements() {
         OTetromino piece = new OTetromino(Couleur.BLEU);
         assertEquals(4, piece.getElements().size());
     }
 
+    // Vérifie les coordonnées initiales et la couleur des éléments
     @Test
     public void testCoordonneesInitialesEtCouleur() {
         OTetromino piece = new OTetromino(Couleur.VERT);
@@ -31,6 +36,7 @@ public class OTetrominoTest {
         }
     }
 
+    // Vérifie le déplacement valide dans le puits
     @Test
     public void testDeplacementValide() throws BloxException {
         Puits puits = new Puits(10, 20);
@@ -47,6 +53,7 @@ public class OTetrominoTest {
         assertEquals(new Coordonnees(6, 2), elements.get(3).getCoordonnees());
     }
 
+    // Vérifie que les déplacements invalides génèrent une IllegalArgumentException
     @Test
     public void testDeplacementInvalideIllegalArgument() {
         Puits puits = new Puits(10, 20);
@@ -58,6 +65,7 @@ public class OTetrominoTest {
         assertThrows(IllegalArgumentException.class, () -> piece.deplacerDe(1, 1));
     }
 
+    // Vérifie qu'une sortie du puits déclenche une exception
     @Test
     public void testSortiePuitsDeclencheException() {
         Puits puits = new Puits(10, 20);
@@ -67,6 +75,7 @@ public class OTetrominoTest {
         assertThrows(BloxException.class, () -> piece.deplacerDe(-1, 0));
     }
 
+    // Vérifie qu'une collision avec une pièce déjà présente déclenche une exception
     @Test
     public void testCollisionDeclencheException() {
         Puits puits = new Puits(10, 20);
@@ -79,6 +88,7 @@ public class OTetrominoTest {
         assertThrows(BloxException.class, () -> pieceMobile.deplacerDe(0, 1));
     }
 
+    // Vérifie que les rotations d'un OTetromino ne modifient pas ses coordonnées
     @Test
     public void testRotationInerte() throws BloxException {
         OTetromino piece = new OTetromino(Couleur.CYAN);
@@ -88,8 +98,8 @@ public class OTetrominoTest {
             avantRotation.add(new Coordonnees(c.getAbscisse(), c.getOrdonnee()));
         }
 
-        piece.tourner(true);  // sens horaire
-        piece.tourner(false); // sens antihoraire
+        piece.tourner(true);   // sens horaire
+        piece.tourner(false);  // sens antihoraire
 
         List<Element> apresRotation = piece.getElements();
         for (int i = 0; i < 4; i++) {

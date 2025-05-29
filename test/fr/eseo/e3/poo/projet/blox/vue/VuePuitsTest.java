@@ -5,8 +5,15 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Classe de tests unitaires pour la classe VuePuits.
+ */
 public class VuePuitsTest {
 
+    /**
+     * Vérifie que le constructeur avec un seul paramètre associe correctement le puits
+     * et utilise la taille par défaut.
+     */
     @Test
     public void testConstructeurAvecUnParametre() {
         Puits puits = new Puits(10, 20);
@@ -16,6 +23,9 @@ public class VuePuitsTest {
         assertEquals(VuePuits.TAILLE_PAR_DEFAUT, vue.getTaille(), "La taille doit être la taille par défaut.");
     }
 
+    /**
+     * Vérifie que le constructeur à deux paramètres affecte correctement le puits et la taille.
+     */
     @Test
     public void testConstructeurAvecDeuxParametres() {
         Puits puits = new Puits(8, 15);
@@ -26,6 +36,9 @@ public class VuePuitsTest {
         assertEquals(taille, vue.getTaille(), "La taille doit être celle fournie en paramètre.");
     }
 
+    /**
+     * Vérifie que le setter de taille modifie correctement l'attribut correspondant.
+     */
     @Test
     public void testSetTaille() {
         Puits puits = new Puits();
@@ -35,6 +48,9 @@ public class VuePuitsTest {
         assertEquals(40, vue.getTaille(), "La taille doit être mise à jour à la nouvelle valeur.");
     }
 
+    /**
+     * Vérifie que le setter de puits met bien à jour l'objet associé.
+     */
     @Test
     public void testSetPuits() {
         Puits puits1 = new Puits();

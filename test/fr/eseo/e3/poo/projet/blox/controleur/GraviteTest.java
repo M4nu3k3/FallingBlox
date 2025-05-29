@@ -13,16 +13,19 @@ public class GraviteTest {
     }
 
     private void testerGraviteAutomatique() {
-        // Création du puits
+        // Initialisation du puits
         Puits puits = new Puits(10, 20);
 
-        // Activation du mode test pour générer une pièce déterministe
+        // Création de la vue avant liaison
+        VuePuits vuePuits = new VuePuits(puits, VuePuits.TAILLE_PAR_DEFAUT);
+
+        // Activation du mode TEST et génération de la pièce
         UsineDePiece.setMode(UsineDePiece.Mode.TEST);
         puits.setPieceActuelle(UsineDePiece.genererPiece());
-        puits.getPieceActuelle().setPosition(5, 5); // Position initiale visible
+        puits.getPieceActuelle().setPosition(5, 5);
 
-        // Création de la vue
-        VuePuits vuePuits = new VuePuits(puits, VuePuits.TAILLE_PAR_DEFAUT);
+        // Réassigner le puits à la vue pour forcer l'enregistrement des PropertyChangeListeners
+        vuePuits.setPuits(puits); // ⚠️ important pour que la vue écoute les événements
 
         // Création de la fenêtre
         JFrame frame = new JFrame("Test Gravité Automatique");
@@ -32,10 +35,10 @@ public class GraviteTest {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
-        // Démarrage de la gravité automatique
-        new Gravite(vuePuits, 500); // exécute la gravité toutes les 500 ms
+        // Démarrage de la gravité
+        new Gravite(vuePuits, 500);
 
-        // Focus pour capter les événements si nécessaire
+        // S'assurer que la vue a bien le focus
         vuePuits.requestFocus();
     }
 

@@ -10,6 +10,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
 
+/**
+ * Gère les déplacements horizontaux (souris) et verticaux (molette)
+ * de la pièce actuelle dans le puits.
+ */
 public class PieceDeplacement implements MouseMotionListener, MouseListener, MouseWheelListener {
 
     private final Puits puits;
@@ -21,6 +25,9 @@ public class PieceDeplacement implements MouseMotionListener, MouseListener, Mou
         this.vuePuits = vuePuits;
     }
 
+    /**
+     * Gère le déplacement horizontal de la pièce lorsqu'on déplace la souris.
+     */
     @Override
     public void mouseMoved(MouseEvent e) {
         if (puits.getPieceActuelle() == null) {
@@ -36,10 +43,11 @@ public class PieceDeplacement implements MouseMotionListener, MouseListener, Mou
         }
 
         if (colonne != derniereColonne) {
-            int colonneActuelle = puits.getPieceActuelle().getElements().get(1).getCoordonnees().getAbscisse();
+            int colonneActuelle = puits.getPieceActuelle()
+                    .getElements().get(1).getCoordonnees().getAbscisse();
             int delta = colonne - colonneActuelle;
 
-            // 🔒 Ne jamais permettre un delta > 1 ou < -1
+            // On limite le déplacement à une colonne maximum par mouvement
             if (delta < -1) delta = -1;
             if (delta > 1) delta = 1;
 
@@ -47,14 +55,16 @@ public class PieceDeplacement implements MouseMotionListener, MouseListener, Mou
                 puits.getPieceActuelle().deplacerDe(delta, 0);
                 vuePuits.repaint();
             } catch (BloxException | IllegalArgumentException ex) {
-                // déplacement invalide → ignorer
+                // Déplacement invalide : on ignore simplement
             }
 
             derniereColonne = colonne;
         }
     }
 
-
+    /**
+     * Gère le déplacement vers le bas par molette de souris.
+     */
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         if (puits.getPieceActuelle() != null && e.getWheelRotation() > 0) {
@@ -62,11 +72,12 @@ public class PieceDeplacement implements MouseMotionListener, MouseListener, Mou
                 puits.getPieceActuelle().deplacerDe(0, 1);
                 vuePuits.repaint();
             } catch (BloxException ex) {
-                // collision
+                // Collision ou fond atteint : aucune action
             }
         }
     }
 
+    // Méthodes d'interface non utilisées
     @Override public void mouseEntered(MouseEvent e) {}
     @Override public void mouseExited(MouseEvent e) {}
     @Override public void mouseDragged(MouseEvent e) {}

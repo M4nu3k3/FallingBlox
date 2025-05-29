@@ -2,11 +2,20 @@ package fr.eseo.e3.poo.projet.blox.modele;
 
 import java.util.Objects;
 
+/**
+ * Représente une paire de coordonnées (x, y) dans le puits.
+ */
 public class Coordonnees {
 
     private int abscisse;
     private int ordonnee;
 
+    /**
+     * Crée une nouvelle instance de coordonnées.
+     *
+     * @param abscisse position horizontale
+     * @param ordonnee position verticale
+     */
     public Coordonnees(int abscisse, int ordonnee) {
         this.abscisse = abscisse;
         this.ordonnee = ordonnee;

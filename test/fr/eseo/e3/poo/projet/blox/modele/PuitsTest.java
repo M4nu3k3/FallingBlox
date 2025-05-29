@@ -1,13 +1,17 @@
 package fr.eseo.e3.poo.projet.blox.modele;
 
-import fr.eseo.e3.poo.projet.blox.modele.pieces.tetrominos.ITetromino;
 import fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
+import fr.eseo.e3.poo.projet.blox.modele.pieces.tetrominos.ITetromino;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Classe de tests unitaires pour la classe Puits.
+ */
 public class PuitsTest {
 
+    // Vérifie les valeurs par défaut du constructeur sans paramètre
     @Test
     public void testConstructeurParDefaut() {
         Puits puits = new Puits();
@@ -17,6 +21,7 @@ public class PuitsTest {
         assertEquals(0, puits.getTas().getElements().size());
     }
 
+    // Vérifie la construction avec largeur et profondeur spécifiées
     @Test
     public void testConstructeurAvecLargeurEtProfondeur() {
         Puits puits = new Puits(8, 22);
@@ -24,6 +29,7 @@ public class PuitsTest {
         assertEquals(22, puits.getProfondeur());
     }
 
+    // Vérifie que la largeur hors bornes génère une exception
     @Test
     public void testSetLargeurInvalide() {
         Puits puits = new Puits();
@@ -31,6 +37,7 @@ public class PuitsTest {
         assertThrows(IllegalArgumentException.class, () -> puits.setLargeur(16));
     }
 
+    // Vérifie que la profondeur hors bornes génère une exception
     @Test
     public void testSetProfondeurInvalide() {
         Puits puits = new Puits();
@@ -38,6 +45,7 @@ public class PuitsTest {
         assertThrows(IllegalArgumentException.class, () -> puits.setProfondeur(26));
     }
 
+    // Vérifie l'affectation des pièces actuelle et suivante
     @Test
     public void testSetPieceActuelleEtSuivante() {
         Puits puits = new Puits();
@@ -52,6 +60,7 @@ public class PuitsTest {
         assertEquals(p1, puits.getPieceActuelle());
     }
 
+    // Vérifie le constructeur utilisant des paramètres pour pré-remplir le tas
     @Test
     public void testTroisiemeConstructeurAvecTas() {
         Puits puits = new Puits(10, 20, 10, 2);
@@ -60,6 +69,7 @@ public class PuitsTest {
         assertEquals(10, puits.getTas().getElements().size());
     }
 
+    // Vérifie le toString en l'absence de pièces
     @Test
     public void testToStringSansPieces() {
         Puits puits = new Puits();
@@ -69,6 +79,7 @@ public class PuitsTest {
         assertTrue(result.contains("Piece Suivante : <aucune>"));
     }
 
+    // Vérifie le toString lorsque des pièces sont présentes
     @Test
     public void testToStringAvecPieces() {
         Puits puits = new Puits();
@@ -76,6 +87,6 @@ public class PuitsTest {
         puits.setPieceActuelle(piece);
         String result = puits.toString();
         assertTrue(result.contains("ITetromino"));
-        assertTrue(result.contains("(5")); // coordonnée d'origine typique
+        assertTrue(result.contains("(5")); // coordonnée typique de départ
     }
 }

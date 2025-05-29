@@ -1,10 +1,15 @@
 package fr.eseo.e3.poo.projet.blox.modele;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Classe de test unitaire pour la classe Element.
+ */
 public class ElementTest {
 
+    // Vérifie la construction d'un élément et l'accès à ses coordonnées et sa couleur
     @Test
     public void testConstructeurEtGetters() {
         Coordonnees coord = new Coordonnees(1, 2);
@@ -14,6 +19,7 @@ public class ElementTest {
         assertEquals(Couleur.ROUGE, element.getCouleur());
     }
 
+    // Vérifie la modification des coordonnées et de la couleur via les setters
     @Test
     public void testSetters() {
         Element element = new Element(new Coordonnees(0, 0), Couleur.BLEU);
@@ -25,12 +31,14 @@ public class ElementTest {
         assertEquals(Couleur.VERT, element.getCouleur());
     }
 
+    // Vérifie la représentation textuelle fournie par la méthode toString
     @Test
     public void testToString() {
         Element element = new Element(new Coordonnees(3, 3), Couleur.JAUNE);
         assertEquals("[JAUNE : (3, 3)]", element.toString());
     }
 
+    // Vérifie l'égalité logique entre deux éléments identiques, ainsi que le hashCode
     @Test
     public void testEqualsEtHashCode() {
         Element e1 = new Element(new Coordonnees(1, 1), Couleur.ORANGE);

@@ -12,9 +12,13 @@ import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+/**
+ * Composant Swing représentant graphiquement un puits de jeu Blox,
+ * avec sa grille, le tas, et la pièce actuelle.
+ */
 public class VuePuits extends JPanel implements PropertyChangeListener {
 
-    public static final int TAILLE_PAR_DEFAUT = 30;
+    public static final int TAILLE_PAR_DEFAUT = 20;
 
     private Puits puits;
     private int taille;
@@ -24,6 +28,8 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
     private PieceDeplacement pieceDeplacement;
     private PieceRotation pieceRotation;
 
+    /* === Constructeurs === */
+
     public VuePuits(Puits puits) {
         this(puits, TAILLE_PAR_DEFAUT);
     }
@@ -31,24 +37,28 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
     public VuePuits(Puits puits, int taille) {
         this.puits = puits;
         this.taille = taille;
+
         this.vuePiece = null;
         this.vueTas = new VueTas(puits, taille);
 
-        this.puits.setVuePuits(this);
-        this.puits.addPropertyChangeListener(this);
+        puits.setVuePuits(this);
+        puits.addPropertyChangeListener(this);
 
         this.pieceDeplacement = new PieceDeplacement(puits, this);
         this.pieceRotation = new PieceRotation(this);
-        this.addMouseMotionListener(this.pieceDeplacement);
-        this.addMouseListener(this.pieceDeplacement);
-        this.addMouseWheelListener(this.pieceDeplacement);
-        this.addMouseListener(this.pieceRotation);
+
+        this.addMouseMotionListener(pieceDeplacement);
+        this.addMouseListener(pieceDeplacement);
+        this.addMouseWheelListener(pieceDeplacement);
+        this.addMouseListener(pieceRotation);
 
         setPreferredSize(new Dimension(puits.getLargeur() * taille, puits.getHauteur() * taille));
         setBackground(Color.WHITE);
         setFocusable(true);
         requestFocusInWindow();
     }
+
+    /* === Gravité automatique === */
 
     public void demarrerGravite(int periode) {
         if (this.gravite == null) {
@@ -60,33 +70,41 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         return gravite;
     }
 
+    /* === Accesseurs et mise à jour du puits === */
+
     public Puits getPuits() {
         return puits;
     }
 
     public void setPuits(Puits puits) {
+        // Retirer les anciens écouteurs
         if (this.puits != null) {
             this.puits.removePropertyChangeListener(this);
-            this.removeMouseMotionListener(this.pieceDeplacement);
-            this.removeMouseListener(this.pieceDeplacement);
-            this.removeMouseWheelListener(this.pieceDeplacement);
-            this.removeMouseListener(this.pieceRotation);
+            this.removeMouseMotionListener(pieceDeplacement);
+            this.removeMouseListener(pieceDeplacement);
+            this.removeMouseWheelListener(pieceDeplacement);
+            this.removeMouseListener(pieceRotation);
         }
 
+        // Associer le nouveau puits
         this.puits = puits;
         this.puits.setVuePuits(this);
         this.puits.addPropertyChangeListener(this);
 
-        this.vueTas = new VueTas(this.puits, this.taille);
-        this.pieceDeplacement = new PieceDeplacement(this.puits, this);
+        // Reconfigurer les vues et écouteurs
+        this.vueTas = new VueTas(puits, taille);
+        this.pieceDeplacement = new PieceDeplacement(puits, this);
         this.pieceRotation = new PieceRotation(this);
-        this.addMouseMotionListener(this.pieceDeplacement);
-        this.addMouseListener(this.pieceDeplacement);
-        this.addMouseWheelListener(this.pieceDeplacement);
-        this.addMouseListener(this.pieceRotation);
+
+        this.addMouseMotionListener(pieceDeplacement);
+        this.addMouseListener(pieceDeplacement);
+        this.addMouseWheelListener(pieceDeplacement);
+        this.addMouseListener(pieceRotation);
 
         repaint();
     }
+
+    /* === Taille des cases === */
 
     public int getTaille() {
         return taille;
@@ -102,7 +120,9 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         repaint();
     }
 
-    void setVuePiece(VuePiece vuePiece) {
+    /* === Vues internes === */
+
+    public void setVuePiece(VuePiece vuePiece) {
         this.vuePiece = vuePiece;
         repaint();
     }
@@ -115,14 +135,18 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         return vueTas;
     }
 
+    /* === Dessin du puits === */
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g.create();
 
+        // Fond
         g2D.setColor(Color.WHITE);
         g2D.fillRect(0, 0, getWidth(), getHeight());
 
+        // Grille
         g2D.setColor(Color.LIGHT_GRAY);
         for (int i = 0; i <= puits.getLargeur(); i++) {
             int x = i * taille;
@@ -133,16 +157,20 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
             g2D.drawLine(0, y, puits.getLargeur() * taille, y);
         }
 
+        // Tas
         if (vueTas != null) {
             vueTas.afficher(g2D);
         }
 
+        // Pièce en cours
         if (vuePiece != null) {
             vuePiece.afficherPiece(g2D);
         }
 
         g2D.dispose();
     }
+
+    /* === Réaction aux changements dans le puits === */
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

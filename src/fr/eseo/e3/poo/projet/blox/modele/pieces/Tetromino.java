@@ -4,11 +4,18 @@ import fr.eseo.e3.poo.projet.blox.modele.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe abstraite représentant un Tétromino du jeu Blox.
+ * Implémente l'interface Piece et fournit les comportements communs.
+ */
 public abstract class Tetromino implements Piece {
 
     protected final List<Element> elements = new ArrayList<>();
     protected Puits puits;
 
+    /**
+     * Constructeur : initialise la pièce à partir de coordonnées et d'une couleur.
+     */
     public Tetromino(Coordonnees coordonnees, Couleur couleur) {
         setPosition(coordonnees.getAbscisse(), coordonnees.getOrdonnee(), couleur);
     }
@@ -38,6 +45,9 @@ public abstract class Tetromino implements Piece {
         setPosition(abscisse, ordonnee, getCouleur());
     }
 
+    /**
+     * Réinitialise la forme de la pièce autour d’un nouveau pivot.
+     */
     protected void setPosition(int abscisse, int ordonnee, Couleur couleur) {
         elements.clear();
         List<Coordonnees> coords = getFormeRelative(abscisse, ordonnee);
@@ -46,6 +56,9 @@ public abstract class Tetromino implements Piece {
         }
     }
 
+    /**
+     * Déplace la pièce selon un vecteur (dx, dy), en vérifiant les collisions.
+     */
     @Override
     public void deplacerDe(int dx, int dy) throws BloxException {
         if (!((dx == -1 && dy == 0) || (dx == 1 && dy == 0) || (dx == 0 && dy == 1))) {
@@ -72,17 +85,24 @@ public abstract class Tetromino implements Piece {
         }
     }
 
+    /**
+     * Met à jour les coordonnées de chaque élément avec une nouvelle liste.
+     */
     protected void miseAJourForme(List<Coordonnees> nouvellesCoordonnees) {
         for (int i = 0; i < getElements().size(); i++) {
             this.getElements().get(i).setCoordonnees(nouvellesCoordonnees.get(i));
         }
     }
 
+    /**
+     * Applique une rotation horaire ou antihoraire autour du pivot.
+     * Déclenche une exception si la rotation génère une collision ou une sortie du puits.
+     */
     @Override
     public void tourner(boolean sensHoraire) throws BloxException {
         if (puits == null || elements.size() != 4) return;
 
-        Coordonnees pivot = elements.get(1).getCoordonnees();
+        Coordonnees pivot = elements.get(1).getCoordonnees(); // Pivot = 2e élément
         int px = pivot.getAbscisse();
         int py = pivot.getOrdonnee();
 
@@ -116,6 +136,9 @@ public abstract class Tetromino implements Piece {
         miseAJourForme(nouvellesCoordonnees);
     }
 
+    /**
+     * Indique si la pièce peut descendre sans collision.
+     */
     public boolean peutDescendre() {
         if (puits == null) return false;
 
@@ -130,5 +153,8 @@ public abstract class Tetromino implements Piece {
         return true;
     }
 
+    /**
+     * Méthode à implémenter par les sous-classes pour définir la forme relative.
+     */
     protected abstract List<Coordonnees> getFormeRelative(int abscisse, int ordonnee);
 }
