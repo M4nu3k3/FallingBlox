@@ -35,20 +35,25 @@ public class PieceDeplacement implements MouseMotionListener, MouseListener, Mou
             return;
         }
 
-        int colonneActuelle = puits.getPieceActuelle().getElements().get(1).getCoordonnees().getAbscisse();
-
         if (colonne != derniereColonne) {
-            int direction = Integer.compare(colonne, colonneActuelle);
+            int colonneActuelle = puits.getPieceActuelle().getElements().get(1).getCoordonnees().getAbscisse();
+            int delta = colonne - colonneActuelle;
+
+            // 🔒 Ne jamais permettre un delta > 1 ou < -1
+            if (delta < -1) delta = -1;
+            if (delta > 1) delta = 1;
 
             try {
-                puits.getPieceActuelle().deplacerDe(direction, 0);
+                puits.getPieceActuelle().deplacerDe(delta, 0);
                 vuePuits.repaint();
-                derniereColonne = colonneActuelle + direction;
-            } catch (BloxException ex) {
-                // déplacement impossible
+            } catch (BloxException | IllegalArgumentException ex) {
+                // déplacement invalide → ignorer
             }
+
+            derniereColonne = colonne;
         }
     }
+
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {

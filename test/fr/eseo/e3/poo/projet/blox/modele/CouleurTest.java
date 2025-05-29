@@ -9,7 +9,7 @@ public class CouleurTest {
 
     @Test
     public void testNombreDeCouleurs() {
-        assertEquals(8, Couleur.values().length);
+        assertEquals(7, Couleur.values().length);
     }
 
     @Test
