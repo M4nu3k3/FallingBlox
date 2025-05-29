@@ -8,10 +8,15 @@ import fr.eseo.e3.poo.projet.blox.vue.VuePuits;
 import javax.swing.*;
 import java.awt.*;
 
+import static fr.eseo.e3.poo.projet.blox.modele.UsineDePiece.Mode.*;
+
 public class FallingBloxVersion1 {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
+
+            // Choix du mode d'Usine de pièce
+            final UsineDePiece.Mode mode = ALEATOIRE;
 
             // Initialisation des paramètres du puits
             int nbElements = 0;
@@ -31,7 +36,7 @@ public class FallingBloxVersion1 {
             }
 
             // Définition du mode de génération des pièces (TEST, ALEATOIRE ou CYCLIQUE)
-            UsineDePiece.setMode(UsineDePiece.Mode.TEST);
+            UsineDePiece.setMode(mode);
 
             // Création de la vue du puits
             VuePuits vuePuits = new VuePuits(puits);
