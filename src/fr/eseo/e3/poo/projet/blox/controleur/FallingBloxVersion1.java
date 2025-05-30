@@ -15,8 +15,9 @@ public class FallingBloxVersion1 {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
 
-            // Choix du mode d'Usine de pièce
+            // Définition du mode de génération des pièces (TEST, ALEATOIRE ou CYCLIQUE)
             final UsineDePiece.Mode mode = ALEATOIRE;
+            UsineDePiece.setMode(mode);
 
             // Initialisation des paramètres du puits
             int nbElements = 0;
@@ -34,9 +35,6 @@ public class FallingBloxVersion1 {
             } else {
                 puits = new Puits(10, 20);
             }
-
-            // Définition du mode de génération des pièces (TEST, ALEATOIRE ou CYCLIQUE)
-            UsineDePiece.setMode(mode);
 
             // Création de la vue du puits
             VuePuits vuePuits = new VuePuits(puits);
