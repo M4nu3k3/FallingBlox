@@ -34,7 +34,3 @@ Ce projet m’a permis de mieux maîtriser :
 - la logique de jeu et les contraintes d’un moteur Tetris,
 - l’interaction entre les événements utilisateur et l’affichage graphique,
 - les bonnes pratiques de structuration logicielle (MVC, encapsulation, responsabilité des classes).
-
----
-
-Projet en cours de développement. Le dépôt sera mis à jour régulièrement.
