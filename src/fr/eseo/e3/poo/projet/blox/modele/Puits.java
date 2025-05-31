@@ -171,6 +171,7 @@ public class Puits {
 
     private void gererCollision() {
         tas.ajouterElements(pieceActuelle);
+        int lignesSupprimees = tas.detecterEtSupprimerLignesComplete();
         setPieceActuelle(pieceSuivante);
         setPieceSuivante(UsineDePiece.genererPiece());
     }

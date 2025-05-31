@@ -1,5 +1,6 @@
 package fr.eseo.e3.poo.projet.blox.vue;
 
+import fr.eseo.e3.poo.projet.blox.controleur.Clavier;
 import fr.eseo.e3.poo.projet.blox.controleur.Gravite;
 import fr.eseo.e3.poo.projet.blox.controleur.PieceDeplacement;
 import fr.eseo.e3.poo.projet.blox.controleur.PieceRotation;
@@ -27,6 +28,7 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
     private Gravite gravite;
     private PieceDeplacement pieceDeplacement;
     private PieceRotation pieceRotation;
+    private Clavier clavier;
 
     /* === Constructeurs === */
 
@@ -52,10 +54,14 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         this.addMouseWheelListener(pieceDeplacement);
         this.addMouseListener(pieceRotation);
 
-        setPreferredSize(new Dimension(puits.getLargeur() * taille, puits.getHauteur() * taille));
-        setBackground(Color.WHITE);
+        // Ajout du contrôleur clavier
+        this.clavier = new Clavier(puits, this);
+        this.addKeyListener(clavier);
         setFocusable(true);
         requestFocusInWindow();
+
+        setPreferredSize(new Dimension(puits.getLargeur() * taille, puits.getHauteur() * taille));
+        setBackground(Color.WHITE);
     }
 
     /* === Gravité automatique === */
@@ -84,6 +90,7 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
             this.removeMouseListener(pieceDeplacement);
             this.removeMouseWheelListener(pieceDeplacement);
             this.removeMouseListener(pieceRotation);
+            this.removeKeyListener(clavier);
         }
 
         // Associer le nouveau puits
@@ -100,6 +107,10 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         this.addMouseListener(pieceDeplacement);
         this.addMouseWheelListener(pieceDeplacement);
         this.addMouseListener(pieceRotation);
+
+        // Recréer le contrôleur clavier
+        this.clavier = new Clavier(puits, this);
+        this.addKeyListener(clavier);
 
         repaint();
     }

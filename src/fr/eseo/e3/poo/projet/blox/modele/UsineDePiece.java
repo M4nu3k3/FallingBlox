@@ -2,8 +2,7 @@ package fr.eseo.e3.poo.projet.blox.modele;
 
 import fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
 import fr.eseo.e3.poo.projet.blox.modele.pieces.Tetromino;
-import fr.eseo.e3.poo.projet.blox.modele.pieces.tetrominos.ITetromino;
-import fr.eseo.e3.poo.projet.blox.modele.pieces.tetrominos.OTetromino;
+import fr.eseo.e3.poo.projet.blox.modele.pieces.tetrominos.*;
 
 import java.util.Random;
 
@@ -22,8 +21,12 @@ public class UsineDePiece {
     private static final Couleur[] COULEURS = Couleur.values();
     private static final Class<?>[] TETROMINOS = {
             ITetromino.class,
-            OTetromino.class
-            // Tu peux ajouter d'autres Tetrominos ici
+            OTetromino.class,
+            TTetromino.class,
+            LTetromino.class,
+            JTetromino.class,
+            ZTetromino.class,
+            STetromino.class
     };
 
     private static final Random RANDOM = new Random();

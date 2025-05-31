@@ -8,7 +8,8 @@ import fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
 
 /**
  * Représente le tas d'éléments figés en bas du puits.
- * Sert à détecter les collisions et à stocker les pièces posées.
+ * Sert à détecter les collisions, stocker les pièces posées,
+ * et gérer la suppression des lignes complètes.
  */
 public class Tas {
 
@@ -66,7 +67,6 @@ public class Tas {
             throw new IllegalArgumentException("Trop d'éléments pour l'espace disponible.");
         }
 
-        // Génère toutes les positions possibles dans la zone définie
         List<Coordonnees> positions = new ArrayList<>();
         for (int y = puits.getHauteur() - nbLignes; y < puits.getHauteur(); y++) {
             for (int x = 0; x < puits.getLargeur(); x++) {
@@ -74,7 +74,6 @@ public class Tas {
             }
         }
 
-        // Ajoute aléatoirement les éléments dans le tas
         for (int i = 0; i < nbElements; i++) {
             int index = rand.nextInt(positions.size());
             Coordonnees coord = positions.remove(index);
@@ -113,6 +112,57 @@ public class Tas {
     public void ajouterElements(Piece piece) {
         for (Element e : piece.getElements()) {
             elements.add(new Element(e.getCoordonnees(), e.getCouleur()));
+        }
+    }
+
+    /* === Gestion des lignes complètes === */
+
+    /**
+     * Détecte et supprime toutes les lignes complètes dans le tas.
+     * Après suppression, les éléments au-dessus descendent d'une case.
+     * @return Le nombre de lignes supprimées.
+     */
+    public int detecterEtSupprimerLignesComplete() {
+        int lignesSupprimees = 0;
+
+        // On parcourt de bas en haut
+        for (int y = puits.getHauteur() - 1; y >= 0; y--) {
+            if (estLigneComplete(y)) {
+                supprimerLigne(y);
+                lignesSupprimees++;
+                y++; // Revenir à la même ligne pour revérifier après descente
+            }
+        }
+
+        return lignesSupprimees;
+    }
+
+    /**
+     * Vérifie si une ligne est complète (toutes les colonnes occupées).
+     */
+    private boolean estLigneComplete(int y) {
+        for (int x = 0; x < puits.getLargeur(); x++) {
+            if (!contientCoordonnees(x, y)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Supprime tous les éléments sur la ligne donnée
+     * et fait descendre d'une case les éléments au-dessus.
+     */
+    private void supprimerLigne(int y) {
+        // Suppression des éléments de la ligne y
+        elements.removeIf(e -> e.getCoordonnees().getOrdonnee() == y);
+
+        // Descente d’une case des éléments au-dessus
+        for (Element e : elements) {
+            Coordonnees c = e.getCoordonnees();
+            if (c.getOrdonnee() < y) {
+                e.setCoordonnees(new Coordonnees(c.getAbscisse(), c.getOrdonnee() + 1));
+            }
         }
     }
 }
