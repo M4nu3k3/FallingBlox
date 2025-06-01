@@ -8,20 +8,15 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Représente un puits de jeu dans lequel tombent les pièces.
- */
 public class Puits {
 
-    // Constantes de dimensions
     public static final int LARGEUR_PAR_DEFAUT = 10;
     public static final int PROFONDEUR_PAR_DEFAUT = 20;
 
-    // Identifiants pour les événements de changement
     public static final String MODIFICATION_PIECE_ACTUELLE = "pieceActuelle";
     public static final String MODIFICATION_PIECE_SUIVANTE = "pieceSuivante";
+    public static final String FIN_PARTIE = "finPartie";
 
-    // Attributs principaux
     private int largeur;
     private int profondeur;
     private Piece pieceActuelle;
@@ -29,11 +24,9 @@ public class Puits {
     private final List<Piece> pieces;
     private Tas tas;
     private VuePuits vuePuits;
+    private boolean partieTerminee = false;
 
-    // Support d'écoute des événements
     private final PropertyChangeSupport pcs;
-
-    /* === Constructeurs === */
 
     public Puits() {
         this(LARGEUR_PAR_DEFAUT, PROFONDEUR_PAR_DEFAUT);
@@ -54,8 +47,6 @@ public class Puits {
         this.tas = new Tas(this, nbElements, nbLignes);
         this.pcs = new PropertyChangeSupport(this);
     }
-
-    /* === Accesseurs dimensions === */
 
     public int getLargeur() {
         return largeur;
@@ -87,8 +78,6 @@ public class Puits {
         setProfondeur(hauteur);
     }
 
-    /* === Vue associée === */
-
     public VuePuits getVuePuits() {
         return vuePuits;
     }
@@ -96,8 +85,6 @@ public class Puits {
     public void setVuePuits(VuePuits vuePuits) {
         this.vuePuits = vuePuits;
     }
-
-    /* === Tas et gestion des pièces === */
 
     public Tas getTas() {
         return tas;
@@ -157,8 +144,6 @@ public class Puits {
         return this.pieces;
     }
 
-    /* === Listeners === */
-
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         pcs.addPropertyChangeListener(listener);
     }
@@ -167,11 +152,15 @@ public class Puits {
         pcs.removePropertyChangeListener(listener);
     }
 
-    /* === Gravité et collisions === */
-
     private void gererCollision() {
         tas.ajouterElements(pieceActuelle);
         int lignesSupprimees = tas.detecterEtSupprimerLignesComplete();
+
+        if (tas.detecterCollisionHaut(pieceActuelle)) {
+            this.partieTerminee = true;
+            pcs.firePropertyChange(FIN_PARTIE, false, true);
+        }
+
         setPieceActuelle(pieceSuivante);
         setPieceSuivante(UsineDePiece.genererPiece());
     }
@@ -187,7 +176,13 @@ public class Puits {
         }
     }
 
-    /* === Affichage texte (debug) === */
+    public boolean isPartieTerminee() {
+        return this.partieTerminee;
+    }
+
+    public void firePropertyChange(String nom, boolean ancien, boolean nouveau) {
+        pcs.firePropertyChange(nom, ancien, nouveau);
+    }
 
     @Override
     public String toString() {
