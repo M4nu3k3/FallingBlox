@@ -8,19 +8,19 @@ import javax.swing.*;
 
 /**
  * Classe de test pour afficher un puits et tester la rotation des pièces
- * via les événements de la souris (clic gauche/droit).
+ * via les événements de la souris (clic gauche/droit)
  */
 public class PieceRotationTest {
 
     /**
-     * Constructeur du test : initialise et affiche la scène de test.
+     * Constructeur du test : initialise et affiche la scène de test
      */
     public PieceRotationTest() {
         afficherPuitsAvecRotation();
     }
 
     /**
-     * Prépare l'affichage du puits et ajoute les pièces nécessaires pour la rotation.
+     * Prépare l'affichage du puits et ajoute les pièces nécessaires pour la rotation
      */
     private void afficherPuitsAvecRotation() {
         // Initialisation du puits avec dimensions standards
@@ -52,7 +52,7 @@ public class PieceRotationTest {
     }
 
     /**
-     * Point d'entrée du test.
+     * Point d'entrée du test
      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(PieceRotationTest::new);

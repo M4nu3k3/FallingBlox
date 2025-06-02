@@ -7,16 +7,23 @@ import fr.eseo.e3.poo.projet.blox.modele.pieces.tetrominos.*;
 import java.util.Random;
 
 /**
- * Usine permettant de générer des pièces en fonction d’un mode (TEST, CYCLIQUE, ALEATOIRE).
+ * Usine de création de pièces du jeu Blox.
+ * Permet de générer des pièces selon différents modes :
+ * TEST : toujours la même pièce (I rouge) pour les tests
+ * CYCLIQUE : pièce et couleur en cycle prédéfini
+ * ALEATOIRE : pièce et couleur aléatoires
  */
 public class UsineDePiece {
 
+    /**
+     * Modes disponibles pour la génération des pièces
+     */
     public enum Mode {
         ALEATOIRE, CYCLIQUE, TEST
     }
 
-    private static Mode mode = Mode.ALEATOIRE;
-    private static int indexCyclique = 0;
+    private static Mode mode = Mode.ALEATOIRE;  // Mode par défaut
+    private static int indexCyclique = 0;       // Index pour mode cyclique
 
     private static final Couleur[] COULEURS = Couleur.values();
     private static final Class<?>[] TETROMINOS = {
@@ -31,31 +38,40 @@ public class UsineDePiece {
 
     private static final Random RANDOM = new Random();
 
-    /* === Mode de fonctionnement === */
-
+    /**
+     * Définit le mode de génération et réinitialise l'index cyclique
+     */
     public static void setMode(Mode nouveauMode) {
         mode = nouveauMode;
         indexCyclique = 0;
     }
 
+    /**
+     * Retourne le mode courant de génération
+     */
     public static Mode getMode() {
         return mode;
     }
 
-    /* === Génération directe de test === */
-
+    /**
+     * Génère un tétromino pour tests (I rouge à position fixe)
+     */
     public static Tetromino genererTetromino() {
         Tetromino tetromino = new ITetromino(Couleur.ROUGE);
-        tetromino.setPosition(2, 3); // Pour tests visuels
+        tetromino.setPosition(2, 3); // Position fixe pour visibilité tests
         return tetromino;
     }
 
-    /* === Génération publique de pièces === */
-
+    /**
+     * Génère une pièce selon le mode courant, sans puits associé
+     */
     public static Piece genererPiece() {
         return genererPiece(null);
     }
 
+    /**
+     * Génère une pièce selon le mode courant, en lui associant un puits
+     */
     public static Piece genererPiece(Puits puits) {
         Piece piece;
 
@@ -85,14 +101,15 @@ public class UsineDePiece {
         return piece;
     }
 
-    /* === Génération dynamique par réflexion === */
-
+    /**
+     * Crée une instance de pièce en utilisant la réflexion, avec un fallback vers ITetromino en cas d'erreur
+     */
     private static Piece creerPiece(int index, Couleur couleur) {
         try {
             return (Piece) TETROMINOS[index].getConstructor(Couleur.class).newInstance(couleur);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ITetromino(couleur); // fallback de secours
+            return new ITetromino(couleur);
         }
     }
 }

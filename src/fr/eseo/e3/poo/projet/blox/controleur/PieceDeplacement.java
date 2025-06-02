@@ -11,8 +11,10 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
 
 /**
- * Gère les déplacements horizontaux (souris) et verticaux (molette)
- * de la pièce actuelle dans le puits.
+ * Contrôleur souris pour gérer les déplacements horizontaux
+ * et verticaux de la pièce dans le puits :
+ * Déplacement horizontal par mouvement de souris
+ * Descente par molette de souris
  */
 public class PieceDeplacement implements MouseMotionListener, MouseListener, MouseWheelListener {
 
@@ -20,19 +22,26 @@ public class PieceDeplacement implements MouseMotionListener, MouseListener, Mou
     private final VuePuits vuePuits;
     private Integer derniereColonne = null;
 
+    /**
+     * Construit un contrôleur de déplacement souris pour une vue du puits.
+     *
+     * @param puits     le modèle du puits
+     * @param vuePuits  la vue graphique du puits
+     */
     public PieceDeplacement(Puits puits, VuePuits vuePuits) {
         this.puits = puits;
         this.vuePuits = vuePuits;
     }
 
     /**
-     * Gère le déplacement horizontal de la pièce lorsqu'on déplace la souris.
+     * Gère les déplacements horizontaux de la pièce en fonction
+     * de la position actuelle de la souris sur l’écran.
+     *
+     * @param e l’événement de déplacement de souris
      */
     @Override
     public void mouseMoved(MouseEvent e) {
-        if (puits.getPieceActuelle() == null) {
-            return;
-        }
+        if (puits.getPieceActuelle() == null) return;
 
         int taille = vuePuits.getTaille();
         int colonne = e.getX() / taille;
@@ -45,9 +54,10 @@ public class PieceDeplacement implements MouseMotionListener, MouseListener, Mou
         if (colonne != derniereColonne) {
             int colonneActuelle = puits.getPieceActuelle()
                     .getElements().get(1).getCoordonnees().getAbscisse();
+
             int delta = colonne - colonneActuelle;
 
-            // On limite le déplacement à une colonne maximum par mouvement
+            // On limite le déplacement à une colonne par mouvement
             if (delta < -1) delta = -1;
             if (delta > 1) delta = 1;
 
@@ -55,7 +65,7 @@ public class PieceDeplacement implements MouseMotionListener, MouseListener, Mou
                 puits.getPieceActuelle().deplacerDe(delta, 0);
                 vuePuits.repaint();
             } catch (BloxException | IllegalArgumentException ex) {
-                // Déplacement invalide : on ignore simplement
+                // Déplacement non possible : on ignore
             }
 
             derniereColonne = colonne;
@@ -63,7 +73,10 @@ public class PieceDeplacement implements MouseMotionListener, MouseListener, Mou
     }
 
     /**
-     * Gère le déplacement vers le bas par molette de souris.
+     * Gère le déplacement vers le bas de la pièce
+     * lorsqu’on utilise la molette de la souris.
+     *
+     * @param e l’événement molette
      */
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
@@ -72,12 +85,12 @@ public class PieceDeplacement implements MouseMotionListener, MouseListener, Mou
                 puits.getPieceActuelle().deplacerDe(0, 1);
                 vuePuits.repaint();
             } catch (BloxException ex) {
-                // Collision ou fond atteint : aucune action
+                // Collision ou bas du puits : on ignore
             }
         }
     }
 
-    // Méthodes d'interface non utilisées
+    // Méthodes inutilisées des interfaces implémentées
     @Override public void mouseEntered(MouseEvent e) {}
     @Override public void mouseExited(MouseEvent e) {}
     @Override public void mouseDragged(MouseEvent e) {}

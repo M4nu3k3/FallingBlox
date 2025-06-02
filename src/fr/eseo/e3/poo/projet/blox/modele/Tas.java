@@ -6,11 +6,16 @@ import java.util.Random;
 
 import fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
 
+/**
+ * Représente le tas de blocs posés au fond du puits, ainsi que
+ * la détection/suppression des lignes complètes et les collisions hautes.
+ */
 public class Tas {
 
-    private final List<Element> elements;
-    private final Puits puits;
+    private final List<Element> elements;  // Liste des éléments présents dans le tas
+    private final Puits puits;             // Référence vers le puits associé
 
+    // Constructeurs
     public Tas() {
         this.puits = null;
         this.elements = new ArrayList<>();
@@ -35,6 +40,7 @@ public class Tas {
         construireTas(nbElements, nbLignes, rand);
     }
 
+    // Accesseurs
     public Puits getPuits() {
         return puits;
     }
@@ -43,6 +49,9 @@ public class Tas {
         return elements;
     }
 
+    /**
+     * Construit un tas initial aléatoire selon les dimensions et nombre d'éléments.
+     */
     public void construireTas(int nbElements, int nbLignes, Random rand) {
         if (puits == null) {
             throw new IllegalStateException("Impossible de construire un tas sans puits.");
@@ -71,6 +80,9 @@ public class Tas {
         }
     }
 
+    /**
+     * Vérifie si un élément du tas est présent à la coordonnée (x, y).
+     */
     public boolean contientCoordonnees(int x, int y) {
         for (Element e : elements) {
             Coordonnees c = e.getCoordonnees();
@@ -81,6 +93,9 @@ public class Tas {
         return false;
     }
 
+    /**
+     * Vérifie si tous les éléments d’une pièce sont déjà dans le tas.
+     */
     public boolean contient(Piece piece) {
         for (Element e : piece.getElements()) {
             if (!elements.contains(e)) {
@@ -90,17 +105,22 @@ public class Tas {
         return true;
     }
 
+    /**
+     * Ajoute tous les éléments d’une pièce au tas (références conservées).
+     */
     public void ajouterPiece(Piece piece) {
         elements.addAll(piece.getElements());
     }
 
+    /**
+     * Ajoute une copie des éléments d'une pièce au tas, puis vérifie une collision haute.
+     */
     public void ajouterElements(Piece piece) {
         for (Element e : piece.getElements()) {
             Coordonnees coord = e.getCoordonnees();
             elements.add(new Element(coord, e.getCouleur()));
         }
 
-        // Détection de collision haute (si un élément est en ligne 0)
         if (detecterCollisionHaut(piece)) {
             if (puits != null && !puits.isPartieTerminee()) {
                 puits.setPartieTerminee(true);
@@ -108,6 +128,9 @@ public class Tas {
         }
     }
 
+    /**
+     * Détecte si un des éléments est sur la ligne 0 (condition de fin).
+     */
     public boolean detecterCollisionHaut(Piece piece) {
         for (Element e : piece.getElements()) {
             if (e.getCoordonnees().getOrdonnee() == 0) {
@@ -117,6 +140,11 @@ public class Tas {
         return false;
     }
 
+    /**
+     * Supprime toutes les lignes complètes et décale le reste vers le bas.
+     *
+     * @return le nombre de lignes supprimées
+     */
     public int detecterEtSupprimerLignesComplete() {
         int lignesSupprimees = 0;
 
@@ -131,6 +159,9 @@ public class Tas {
         return lignesSupprimees;
     }
 
+    /**
+     * Vérifie si une ligne est complètement remplie.
+     */
     private boolean estLigneComplete(int y) {
         for (int x = 0; x < puits.getLargeur(); x++) {
             if (!contientCoordonnees(x, y)) {
@@ -140,6 +171,9 @@ public class Tas {
         return true;
     }
 
+    /**
+     * Supprime tous les éléments sur la ligne donnée et décale ceux au-dessus.
+     */
     private void supprimerLigne(int y) {
         elements.removeIf(e -> e.getCoordonnees().getOrdonnee() == y);
 

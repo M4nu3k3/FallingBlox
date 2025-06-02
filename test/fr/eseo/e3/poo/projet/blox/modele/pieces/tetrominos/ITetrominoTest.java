@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Tests unitaires pour la classe ITetromino.
+ * Tests unitaires pour la classe ITetromino
  */
 public class ITetrominoTest {
 
     /**
-     * Vérifie que la pièce I contient bien 4 éléments.
+     * Vérifie que la pièce I contient bien 4 éléments
      */
     @Test
     public void testNombreDElements() {
@@ -23,7 +23,7 @@ public class ITetrominoTest {
     }
 
     /**
-     * Vérifie les coordonnées initiales de la pièce I.
+     * Vérifie les coordonnées initiales de la pièce I
      */
     @Test
     public void testCoordonneesInitiales() {
@@ -37,7 +37,7 @@ public class ITetrominoTest {
     }
 
     /**
-     * Vérifie que tous les éléments ont la bonne couleur.
+     * Vérifie que tous les éléments ont la bonne couleur
      */
     @Test
     public void testCouleurElements() {
@@ -48,7 +48,7 @@ public class ITetrominoTest {
     }
 
     /**
-     * Vérifie le déplacement valide d'une pièce dans un puits.
+     * Vérifie le déplacement valide d'une pièce dans un puits
      */
     @Test
     public void testDeplacementValide() throws BloxException {
@@ -67,7 +67,7 @@ public class ITetrominoTest {
     }
 
     /**
-     * Vérifie que les déplacements invalides lèvent une IllegalArgumentException.
+     * Vérifie que les déplacements invalides lèvent une IllegalArgumentException
      */
     @Test
     public void testDeplacementInvalide() {
@@ -79,7 +79,7 @@ public class ITetrominoTest {
     }
 
     /**
-     * Vérifie qu'une collision déclenche une BloxException.
+     * Vérifie qu'une collision déclenche une BloxException
      */
     @Test
     public void testCollisionAvecTas() {
@@ -94,7 +94,7 @@ public class ITetrominoTest {
     }
 
     /**
-     * Vérifie qu'une sortie du puits déclenche une BloxException.
+     * Vérifie qu'une sortie du puits déclenche une BloxException
      */
     @Test
     public void testSortiePuitsDeclencheException() {
@@ -106,7 +106,7 @@ public class ITetrominoTest {
     }
 
     /**
-     * Vérifie que 4 rotations horaires ramènent la pièce à sa forme initiale (verticale).
+     * Vérifie que 4 rotations horaires ramènent la pièce à sa forme initiale (verticale)
      */
     @Test
     public void testRotationHoraire360() throws BloxException {
@@ -127,7 +127,7 @@ public class ITetrominoTest {
     }
 
     /**
-     * Vérifie que 4 rotations anti-horaires ramènent la pièce à sa position initiale.
+     * Vérifie que 4 rotations anti-horaires ramènent la pièce à sa position initiale
      */
     @Test
     public void testRotationAntiHoraire360() throws BloxException {

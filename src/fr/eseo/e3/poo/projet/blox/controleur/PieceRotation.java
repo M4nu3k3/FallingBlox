@@ -10,7 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * Gère la rotation des pièces (Tetromino) au clic de souris :
+ * Gère la rotation des pièces au clic de souris :
  * - Clic gauche : rotation anti-horaire
  * - Clic droit : rotation horaire
  */

@@ -8,50 +8,23 @@ import fr.eseo.e3.poo.projet.blox.modele.Puits;
 import java.util.List;
 
 /**
- * Interface définissant le comportement commun des pièces du jeu Blox.
+ * Interface qui regroupe tout ce qu’une pièce doit savoir faire dans le jeu :
+ * se déplacer, tourner, changer de position, avoir une couleur, et être liée à un puits.
+ * Toutes les pièces (comme les tetrominos) vont devoir suivre ce modèle.
  */
 public interface Piece {
 
-    /**
-     * Retourne la liste des éléments qui composent la pièce.
-     */
     List<Element> getElements();
 
-    /**
-     * Retourne la couleur associée à la pièce.
-     */
     Couleur getCouleur();
 
-    /**
-     * Définit la position du pivot de la pièce.
-     *
-     * @param abscisse position en x
-     * @param ordonnee position en y
-     */
     void setPosition(int abscisse, int ordonnee);
 
-    /**
-     * Déplace la pièce d’un certain vecteur (dx, dy).
-     *
-     * @throws BloxException si le déplacement est invalide
-     */
     void deplacerDe(int dx, int dy) throws BloxException;
 
-    /**
-     * Fait tourner la pièce dans le sens spécifié.
-     *
-     * @param sensHoraire true pour horaire, false pour antihoraire
-     * @throws BloxException si la rotation est invalide
-     */
     void tourner(boolean sensHoraire) throws BloxException;
 
-    /**
-     * Associe un puits à la pièce.
-     */
     void setPuits(Puits puits);
 
-    /**
-     * Retourne le puits auquel la pièce est attachée.
-     */
     Puits getPuits();
 }

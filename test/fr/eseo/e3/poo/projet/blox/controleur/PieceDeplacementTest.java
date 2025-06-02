@@ -19,7 +19,7 @@ public class PieceDeplacementTest {
     }
 
     /**
-     * Crée un puits et une vue graphique avec gestion du déplacement par la souris et contrôle clavier.
+     * Crée un puits et une vue graphique avec gestion du déplacement par la souris et contrôle clavier
      */
     private void initialiserFenetre() {
         // Création du puits

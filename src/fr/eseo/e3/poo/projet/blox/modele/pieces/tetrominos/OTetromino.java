@@ -8,59 +8,72 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Représentation de la pièce O (carré 2x2), sans rotation.
+ * Représentation de la pièce OTetromino (carré 2x2).
+ * Cette pièce est symétrique et ne tourne jamais.
  */
 public class OTetromino extends Tetromino {
 
     /**
-     * Constructeur par défaut avec pivot à (4, 0) et couleur rouge.
+     * Constructeur par défaut : pivot à (4, 0), couleur rouge.
      */
     public OTetromino() {
         super(new Coordonnees(4, 0), Couleur.ROUGE);
     }
 
     /**
-     * Constructeur avec couleur personnalisée (pivot à (4, 0)).
+     * Constructeur avec couleur personnalisée, pivot fixé à (4, 0).
+     *
+     * @param couleur la couleur de la pièce
      */
     public OTetromino(Couleur couleur) {
         super(new Coordonnees(4, 0), couleur);
     }
 
     /**
-     * Constructeur avec pivot et couleur personnalisés.
+     * Constructeur complet avec coordonnées de pivot et couleur.
+     *
+     * @param coordonnees les coordonnées du pivot
+     * @param couleur la couleur de la pièce
      */
     public OTetromino(Coordonnees coordonnees, Couleur couleur) {
         super(coordonnees, couleur);
     }
 
     /**
-     * Retourne les coordonnées relatives des 4 blocs de la pièce O.
-     * Cette pièce ne tourne pas, car sa forme est symétrique.
+     * Définit la forme carrée autour du pivot (2x2).
+     *
+     * @param abscisse abscisse du pivot
+     * @param ordonnee ordonnée du pivot
+     * @return la liste des coordonnées relatives formant la pièce
      */
     @Override
     protected List<Coordonnees> getFormeRelative(int abscisse, int ordonnee) {
         List<Coordonnees> coords = new ArrayList<>();
-        coords.add(new Coordonnees(abscisse, ordonnee));
-        coords.add(new Coordonnees(abscisse + 1, ordonnee));
-        coords.add(new Coordonnees(abscisse, ordonnee + 1));
-        coords.add(new Coordonnees(abscisse + 1, ordonnee + 1));
+        coords.add(new Coordonnees(abscisse, ordonnee));         // coin haut gauche
+        coords.add(new Coordonnees(abscisse + 1, ordonnee));     // coin haut droit
+        coords.add(new Coordonnees(abscisse, ordonnee + 1));     // coin bas gauche
+        coords.add(new Coordonnees(abscisse + 1, ordonnee + 1)); // coin bas droit
         return coords;
     }
 
     /**
-     * Surcharge vide : la pièce O ne tourne jamais.
+     * Override vide car la pièce O est symétrique et ne peut pas tourner.
+     *
+     * @param sensHoraire ignoré
      */
     @Override
     public void tourner(boolean sensHoraire) {
-        // Pas de rotation pour la pièce O
+        // Rotation désactivée pour la pièce O
     }
 
     /**
-     * Affichage textuel de la pièce (liste des éléments).
+     * Affiche la représentation textuelle de la pièce pour débogage.
+     *
+     * @return chaîne décrivant les éléments de la pièce
      */
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("OTetromino:");
+        StringBuilder sb = new StringBuilder("OTetromino :");
         for (var e : getElements()) {
             sb.append("\n\t").append(e.toString());
         }

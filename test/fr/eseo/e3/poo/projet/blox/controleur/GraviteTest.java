@@ -25,7 +25,7 @@ public class GraviteTest {
         puits.getPieceActuelle().setPosition(5, 5);
 
         // Réassigner le puits à la vue pour forcer l'enregistrement des PropertyChangeListeners
-        vuePuits.setPuits(puits); // ⚠️ important pour que la vue écoute les événements
+        vuePuits.setPuits(puits);
 
         // Création de la fenêtre
         JFrame frame = new JFrame("Test Gravité Automatique");

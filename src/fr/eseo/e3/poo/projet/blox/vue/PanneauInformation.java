@@ -14,6 +14,15 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+/**
+ * Panneau d'information affichant :
+ * La pièce suivante (vue réduite)
+ * Les boutons pause/rejouer
+ * Le score et meilleur score
+ * Les instructions utilisateur
+ *
+ * Écouteur de changements sur le modèle Puits pour mise à jour
+ */
 public class PanneauInformation extends JPanel implements PropertyChangeListener {
 
     public static final int TAILLE_PAR_DEFAUT = 240;
@@ -30,17 +39,25 @@ public class PanneauInformation extends JPanel implements PropertyChangeListener
     private List<Element> elements;
     private int tailleCase;
 
+    /**
+     * Constructeur principal : initialise le panneau, configure l’affichage et les listeners
+     *
+     * @param puits modèle du puits de jeu
+     */
     public PanneauInformation(Puits puits) {
         this.puits = puits;
         this.puits.addPropertyChangeListener(this);
-        this.setPreferredSize(new Dimension(TAILLE_PAR_DEFAUT, 500));
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+        setPreferredSize(new Dimension(TAILLE_PAR_DEFAUT, 500));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        // Titre pour la prochaine pièce
         JLabel labelTitre = new JLabel("Prochaine pièce :");
         labelTitre.setAlignmentX(Component.CENTER_ALIGNMENT);
-        this.add(Box.createVerticalStrut(10));
-        this.add(labelTitre);
+        add(Box.createVerticalStrut(10));
+        add(labelTitre);
 
+        // Panneau d'affichage de la pièce suivante, personnalisé pour le dessin
         panneauPieceSuivante = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -49,6 +66,7 @@ public class PanneauInformation extends JPanel implements PropertyChangeListener
                     Graphics2D g2D = (Graphics2D) g.create();
                     g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+                    // Calcul des bornes min/max pour centrer la pièce
                     int minX = Integer.MAX_VALUE, maxX = Integer.MIN_VALUE;
                     int minY = Integer.MAX_VALUE, maxY = Integer.MIN_VALUE;
                     for (Element e : elements) {
@@ -67,6 +85,7 @@ public class PanneauInformation extends JPanel implements PropertyChangeListener
 
                     g2D.translate(offsetX, offsetY);
 
+                    // Dessin des éléments avec une teinte spéciale sur le pivot (index 1)
                     for (int i = 0; i < elements.size(); i++) {
                         Element e = elements.get(i);
                         int x = e.getCoordonnees().getAbscisse() * tailleCase;
@@ -97,15 +116,16 @@ public class PanneauInformation extends JPanel implements PropertyChangeListener
                 }
             }
         };
+
         panneauPieceSuivante.setPreferredSize(new Dimension(100, 100));
         panneauPieceSuivante.setMaximumSize(new Dimension(120, 120));
         panneauPieceSuivante.setBackground(Color.WHITE);
         panneauPieceSuivante.setAlignmentX(Component.CENTER_ALIGNMENT);
-        this.add(panneauPieceSuivante);
+        add(panneauPieceSuivante);
 
-        // Laisser de l'espace après l'affichage de la pièce
-        this.add(Box.createVerticalStrut(15));
+        add(Box.createVerticalStrut(15));
 
+        // Bouton pause / reprise
         boutonPause = new JButton("\u23F8");
         boutonPause.setAlignmentX(Component.CENTER_ALIGNMENT);
         boutonPause.addActionListener(new ActionListener() {
@@ -125,37 +145,55 @@ public class PanneauInformation extends JPanel implements PropertyChangeListener
                 }
             }
         });
-        this.add(boutonPause);
-        this.add(Box.createRigidArea(new Dimension(0, 10)));
+        add(boutonPause);
+        add(Box.createRigidArea(new Dimension(0, 10)));
 
+        // Bouton rejouer
         boutonRejouer = new JButton("\u21BB");
         boutonRejouer.setAlignmentX(Component.CENTER_ALIGNMENT);
-        this.add(boutonRejouer);
-        this.add(Box.createVerticalStrut(20));
+        add(boutonRejouer);
+        add(Box.createVerticalStrut(20));
 
+        // Affichage score
         JLabel scoreLabel = new JLabel("Score : 0");
         scoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         scoreLabel.setName("scoreLabel");
-        this.add(scoreLabel);
+        add(scoreLabel);
 
+        // Affichage meilleur score
         JLabel bestScoreLabel = new JLabel("Meilleur : 0");
         bestScoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         bestScoreLabel.setName("bestScoreLabel");
-        this.add(bestScoreLabel);
+        add(bestScoreLabel);
 
-        this.add(Box.createVerticalStrut(20));
+        add(Box.createVerticalStrut(20));
 
+        // Instructions utilisateur
         JLabel commandes = new JLabel("Commandes :");
         commandes.setAlignmentX(Component.CENTER_ALIGNMENT);
-        this.add(commandes);
+        add(commandes);
 
-        JTextArea instructions = new JTextArea("Clavier :\n←/→ : déplacer\n↑ ou ↓ : rotation\nShift : descente\n\nSouris :\nClic gauche : rotation\nMolette : chute\nDéplacement : translation");
+        JTextArea instructions = new JTextArea(
+                "Clavier :\n" +
+                        "←/→ : déplacer\n" +
+                        "↑ ou ↓ : rotation\n" +
+                        "Shift : descente\n\n" +
+                        "Souris :\n" +
+                        "Clic gauche ou droit : rotation\n" +
+                        "Molette : chute\n" +
+                        "Déplacement : translation"
+        );
         instructions.setEditable(false);
         instructions.setFont(new Font("Monospaced", Font.PLAIN, 11));
         instructions.setBackground(getBackground());
-        this.add(instructions);
+        add(instructions);
     }
 
+    /**
+     * Change le puits suivi par ce panneau
+     *
+     * @param puits nouveau puits à suivre
+     */
     public void setPuits(Puits puits) {
         if (this.puits != null) {
             this.puits.removePropertyChangeListener(this);
@@ -179,6 +217,10 @@ public class PanneauInformation extends JPanel implements PropertyChangeListener
         return boutonRejouer;
     }
 
+    /**
+     * Méthode déclenchée lors d'un changement dans le modèle observé (Puits)
+     * Met à jour la pièce suivante et les scores affichés
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (Puits.MODIFICATION_PIECE_SUIVANTE.equals(evt.getPropertyName())) {
@@ -191,7 +233,7 @@ public class PanneauInformation extends JPanel implements PropertyChangeListener
             }
             panneauPieceSuivante.repaint();
         } else if ("score".equals(evt.getPropertyName())) {
-            for (Component c : this.getComponents()) {
+            for (Component c : getComponents()) {
                 if (c instanceof JLabel && "scoreLabel".equals(c.getName())) {
                     ((JLabel) c).setText("Score : " + evt.getNewValue());
                 }

@@ -8,15 +8,22 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Représente un puits de jeu contenant les pièces tombantes, le tas de blocs posés,
+ * la logique de score, de collision et de progression de la partie.
+ */
 public class Puits {
 
+    // Dimensions par défaut du puits
     public static final int LARGEUR_PAR_DEFAUT = 10;
     public static final int PROFONDEUR_PAR_DEFAUT = 20;
 
+    // Constantes de notification pour les PropertyChangeListener
     public static final String MODIFICATION_PIECE_ACTUELLE = "pieceActuelle";
     public static final String MODIFICATION_PIECE_SUIVANTE = "pieceSuivante";
     public static final String FIN_PARTIE = "finPartie";
 
+    // Attributs principaux du puits
     private int largeur;
     private int profondeur;
     private Piece pieceActuelle;
@@ -26,11 +33,14 @@ public class Puits {
     private VuePuits vuePuits;
     private boolean partieTerminee = false;
 
+    // Gestion du score
     private int score = 0;
     private int meilleurScore = 0;
 
+    // Support d'écoute pour notifier les vues
     private final PropertyChangeSupport pcs;
 
+    // Constructeurs
     public Puits() {
         this(LARGEUR_PAR_DEFAUT, PROFONDEUR_PAR_DEFAUT);
     }
@@ -51,70 +61,41 @@ public class Puits {
         this.pcs = new PropertyChangeSupport(this);
     }
 
-    public int getLargeur() {
-        return largeur;
-    }
+    // Accesseurs et mutateurs (dimensions)
+    public int getLargeur() { return largeur; }
 
     public void setLargeur(int largeur) {
-        if (largeur < 5 || largeur > 15) {
+        if (largeur < 5 || largeur > 15)
             throw new IllegalArgumentException("La largeur doit être comprise entre 5 et 15.");
-        }
         this.largeur = largeur;
     }
 
-    public int getProfondeur() {
-        return profondeur;
-    }
+    public int getProfondeur() { return profondeur; }
 
     public void setProfondeur(int profondeur) {
-        if (profondeur < 10 || profondeur > 25) {
+        if (profondeur < 10 || profondeur > 25)
             throw new IllegalArgumentException("La profondeur doit être comprise entre 10 et 25.");
-        }
         this.profondeur = profondeur;
     }
 
-    public int getHauteur() {
-        return getProfondeur();
-    }
+    public int getHauteur() { return getProfondeur(); }
 
-    public void setHauteur(int hauteur) {
-        setProfondeur(hauteur);
-    }
+    public void setHauteur(int hauteur) { setProfondeur(hauteur); }
 
-    public VuePuits getVuePuits() {
-        return vuePuits;
-    }
+    // Vue liée au puits
+    public VuePuits getVuePuits() { return vuePuits; }
 
-    public void setVuePuits(VuePuits vuePuits) {
-        this.vuePuits = vuePuits;
-    }
+    public void setVuePuits(VuePuits vuePuits) { this.vuePuits = vuePuits; }
 
-    public Tas getTas() {
-        return tas;
-    }
+    // Tas de blocs posés
+    public Tas getTas() { return tas; }
 
-    public void setTas(Tas tas) {
-        this.tas = tas;
-    }
+    public void setTas(Tas tas) { this.tas = tas; }
 
-    public Piece getPieceActuelle() {
-        return pieceActuelle;
-    }
+    // Gestion des pièces
+    public Piece getPieceActuelle() { return pieceActuelle; }
 
-    public Piece getPieceSuivante() {
-        return pieceSuivante;
-    }
-    public void firePropertyChange(String nom, int ancien, int nouveau) {
-        pcs.firePropertyChange(nom, ancien, nouveau);
-    }
-    public void incrementerScorePourTest(int valeur) {
-        int ancien = this.score;
-        this.score += valeur;
-        if (this.score > this.meilleurScore) {
-            this.meilleurScore = this.score;
-        }
-        pcs.firePropertyChange("score", ancien, this.score);
-    }
+    public Piece getPieceSuivante() { return pieceSuivante; }
 
     public void setPieceActuelle(Piece piece) {
         Piece ancienne = this.pieceActuelle;
@@ -150,6 +131,7 @@ public class Puits {
         return this.pieces;
     }
 
+    // PropertyChangeListener
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         pcs.addPropertyChangeListener(listener);
     }
@@ -158,34 +140,34 @@ public class Puits {
         pcs.removePropertyChangeListener(listener);
     }
 
-    private void gererCollision() {
-        tas.ajouterElements(pieceActuelle);
-        int lignesSupprimees = tas.detecterEtSupprimerLignesComplete();
-
-        if (lignesSupprimees > 0) {
-            int ancienScore = this.score;
-            this.score += lignesSupprimees;
-            pcs.firePropertyChange("score", ancienScore, this.score);
-
-            if (this.score > this.meilleurScore) {
-                this.meilleurScore = this.score;
-            }
-        }
-
-        if (!partieTerminee) {
-            if (pieceSuivante == null) {
-                setPieceActuelle(UsineDePiece.genererPiece());
-            } else {
-                setPieceActuelle(pieceSuivante);
-                setPieceSuivante(UsineDePiece.genererPiece());
-            }
-
-            if (tas.contient(pieceActuelle)) {
-                setPartieTerminee(true);
-            }
-        }
+    public void firePropertyChange(String nom, int ancien, int nouveau) {
+        pcs.firePropertyChange(nom, ancien, nouveau);
     }
 
+    public void firePropertyChange(String nom, boolean ancien, boolean nouveau) {
+        pcs.firePropertyChange(nom, ancien, nouveau);
+    }
+
+    // Gestion du score
+    public int getScore() { return score; }
+
+    public int getMeilleurScore() { return meilleurScore; }
+
+    public void resetScore() {
+        int ancien = this.score;
+        this.score = 0;
+        pcs.firePropertyChange("score", ancien, this.score);
+    }
+
+    public void incrementerScorePourTest(int valeur) {
+        int ancien = this.score;
+        this.score += valeur;
+        if (this.score > this.meilleurScore)
+            this.meilleurScore = this.score;
+        pcs.firePropertyChange("score", ancien, this.score);
+    }
+
+    // Gravité : fait descendre la pièce actuelle
     public void gravite() throws BloxException {
         if (partieTerminee) return;
 
@@ -199,9 +181,34 @@ public class Puits {
         }
     }
 
-    public boolean isPartieTerminee() {
-        return this.partieTerminee;
+    // Gère la fin de déplacement d'une pièce et la transition
+    private void gererCollision() {
+        tas.ajouterElements(pieceActuelle);
+        int lignesSupprimees = tas.detecterEtSupprimerLignesComplete();
+
+        if (lignesSupprimees > 0) {
+            int ancienScore = this.score;
+            this.score += lignesSupprimees;
+            pcs.firePropertyChange("score", ancienScore, this.score);
+            if (this.score > this.meilleurScore)
+                this.meilleurScore = this.score;
+        }
+
+        if (!partieTerminee) {
+            if (pieceSuivante == null)
+                setPieceActuelle(UsineDePiece.genererPiece());
+            else {
+                setPieceActuelle(pieceSuivante);
+                setPieceSuivante(UsineDePiece.genererPiece());
+            }
+
+            if (tas.contient(pieceActuelle))
+                setPartieTerminee(true);
+        }
     }
+
+    // Fin de partie
+    public boolean isPartieTerminee() { return this.partieTerminee; }
 
     public void setPartieTerminee(boolean terminee) {
         boolean ancien = this.partieTerminee;
@@ -209,10 +216,7 @@ public class Puits {
         pcs.firePropertyChange(FIN_PARTIE, ancien, terminee);
     }
 
-    public void firePropertyChange(String nom, boolean ancien, boolean nouveau) {
-        pcs.firePropertyChange(nom, ancien, nouveau);
-    }
-
+    // Réinitialisation complète du puits
     public void reset() {
         this.pieceActuelle = null;
         this.pieceSuivante = null;
@@ -224,29 +228,16 @@ public class Puits {
         setPieceSuivante(UsineDePiece.genererPiece());
     }
 
-    public int getScore() {
-        return score;
-    }
-
-    public int getMeilleurScore() {
-        return meilleurScore;
-    }
-
-    public void resetScore() {
-        int ancien = this.score;
-        this.score = 0;
-        pcs.firePropertyChange("score", ancien, this.score);
-    }
-
+    // Affichage du contenu du puits
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Puits : Dimension ").append(largeur).append(" x ").append(profondeur).append("\n");
 
         sb.append("Piece Actuelle : ");
-        if (pieceActuelle == null) {
+        if (pieceActuelle == null)
             sb.append("<aucune>\n");
-        } else {
+        else {
             sb.append(pieceActuelle.getClass().getSimpleName()).append("\n");
             for (Element e : pieceActuelle.getElements()) {
                 sb.append("    ").append(e).append("\n");
@@ -254,9 +245,9 @@ public class Puits {
         }
 
         sb.append("Piece Suivante : ");
-        if (pieceSuivante == null) {
+        if (pieceSuivante == null)
             sb.append("<aucune>\n");
-        } else {
+        else {
             sb.append(pieceSuivante.getClass().getSimpleName()).append("\n");
             for (Element e : pieceSuivante.getElements()) {
                 sb.append("    ").append(e).append("\n");
