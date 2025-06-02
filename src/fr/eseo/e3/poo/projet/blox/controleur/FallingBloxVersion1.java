@@ -34,16 +34,17 @@ public class FallingBloxVersion1 {
             }
 
             final VuePuits[] vuePuitsRef = new VuePuits[] { new VuePuits(puits) };
-            final PanneauInformation panneauInfo = new PanneauInformation(puits);
             final Gravite[] graviteRef = new Gravite[] { new Gravite(vuePuitsRef[0], 500) };
             vuePuitsRef[0].setGravite(graviteRef[0]);
 
             puits.setPieceActuelle(UsineDePiece.genererPiece());
             puits.setPieceSuivante(UsineDePiece.genererPiece());
-            vuePuitsRef[0].repaint();
 
-            JButton boutonRejouer = new JButton("Rejouer");
-            boutonRejouer.addActionListener(e -> {
+            final PanneauInformation panneauInfo = new PanneauInformation(puits);
+            panneauInfo.setGravite(graviteRef[0]);
+            panneauInfo.setVuePuits(vuePuitsRef[0]);
+
+            panneauInfo.getBoutonRejouer().addActionListener(e -> {
                 graviteRef[0].stop();
 
                 Puits nouveauPuits = new Puits(10, 20);
@@ -55,6 +56,8 @@ public class FallingBloxVersion1 {
                 nouveauPuits.setPieceSuivante(UsineDePiece.genererPiece());
 
                 panneauInfo.setPuits(nouveauPuits);
+                panneauInfo.setGravite(nouvelleGravite);
+                panneauInfo.setVuePuits(nouvelleVue);
 
                 Container parent = vuePuitsRef[0].getParent();
                 parent.remove(vuePuitsRef[0]);
@@ -67,15 +70,11 @@ public class FallingBloxVersion1 {
                 vuePuitsRef[0].requestFocus();
             });
 
-            JPanel panneauSud = new JPanel(new FlowLayout());
-            panneauSud.add(boutonRejouer);
-
             JFrame frame = new JFrame("Falling Blox");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setLayout(new BorderLayout());
             frame.add(vuePuitsRef[0], BorderLayout.CENTER);
             frame.add(panneauInfo, BorderLayout.EAST);
-            frame.add(panneauSud, BorderLayout.SOUTH);
             frame.pack();
             frame.setResizable(false);
             frame.setLocationRelativeTo(null);

@@ -26,6 +26,9 @@ public class Puits {
     private VuePuits vuePuits;
     private boolean partieTerminee = false;
 
+    private int score = 0;
+    private int meilleurScore = 0;
+
     private final PropertyChangeSupport pcs;
 
     public Puits() {
@@ -146,7 +149,17 @@ public class Puits {
 
     private void gererCollision() {
         tas.ajouterElements(pieceActuelle);
-        tas.detecterEtSupprimerLignesComplete();
+        int lignesSupprimees = tas.detecterEtSupprimerLignesComplete();
+
+        if (lignesSupprimees > 0) {
+            int ancienScore = this.score;
+            this.score += lignesSupprimees;
+            pcs.firePropertyChange("score", ancienScore, this.score);
+
+            if (this.score > this.meilleurScore) {
+                this.meilleurScore = this.score;
+            }
+        }
 
         if (!partieTerminee) {
             if (pieceSuivante == null) {
@@ -195,8 +208,23 @@ public class Puits {
         this.pieces.clear();
         this.tas = new Tas(this);
         setPartieTerminee(false);
+        resetScore();
         setPieceActuelle(UsineDePiece.genererPiece());
         setPieceSuivante(UsineDePiece.genererPiece());
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getMeilleurScore() {
+        return meilleurScore;
+    }
+
+    public void resetScore() {
+        int ancien = this.score;
+        this.score = 0;
+        pcs.firePropertyChange("score", ancien, this.score);
     }
 
     @Override

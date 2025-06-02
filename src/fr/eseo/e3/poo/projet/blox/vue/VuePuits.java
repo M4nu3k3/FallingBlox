@@ -188,4 +188,20 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
 
         JOptionPane.showMessageDialog(this, "Fin de la partie", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
     }
+    public void deconnectListeners() {
+        this.removeMouseMotionListener(pieceDeplacement);
+        this.removeMouseListener(pieceDeplacement);
+        this.removeMouseWheelListener(pieceDeplacement);
+        this.removeMouseListener(pieceRotation);
+        this.removeKeyListener(clavier);
+    }
+
+    public void reconnectListeners() {
+        this.addMouseMotionListener(pieceDeplacement);
+        this.addMouseListener(pieceDeplacement);
+        this.addMouseWheelListener(pieceDeplacement);
+        this.addMouseListener(pieceRotation);
+        this.addKeyListener(clavier);
+        this.requestFocusInWindow();
+    }
 }
