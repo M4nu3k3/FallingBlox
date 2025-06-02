@@ -6,7 +6,7 @@ import fr.eseo.e3.poo.projet.blox.modele.UsineDePiece;
 import javax.swing.*;
 
 /**
- * Classe de test pour vérifier l'affichage du puits via les différents constructeurs de VuePuits.
+ * Classe de test pour vérifier l'affichage du puits via les différents constructeurs de VuePuits
  */
 public class VuePuitsAffichageTest {
 
@@ -16,7 +16,7 @@ public class VuePuitsAffichageTest {
     }
 
     /**
-     * Teste le constructeur VuePuits(Puits) avec un puits de dimensions classiques.
+     * Teste le constructeur VuePuits(Puits) avec un puits de dimensions classiques
      */
     private void testConstructeurPuits() {
         Puits puits = new Puits(10, 20);
@@ -37,7 +37,7 @@ public class VuePuitsAffichageTest {
     }
 
     /**
-     * Teste le constructeur VuePuits(Puits, int) avec une taille personnalisée.
+     * Teste le constructeur VuePuits(Puits, int) avec une taille personnalisée
      */
     private void testConstructeurPuitsTaille() {
         Puits puits = new Puits(8, 18);

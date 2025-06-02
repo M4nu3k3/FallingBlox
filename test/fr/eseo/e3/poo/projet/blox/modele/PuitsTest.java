@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Classe de tests unitaires pour valider les fonctionnalités de la classe Puits,
- * y compris la gestion du score.
+ * Classe de tests unitaires pour valider les fonctionnalités de la classe Puits, y compris la gestion du score
  */
 public class PuitsTest {
 

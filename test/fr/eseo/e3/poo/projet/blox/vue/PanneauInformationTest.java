@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Classe de tests pour vérifier les comportements de PanneauInformation :
- * - affichage de la pièce suivante
- * - mise à jour du score
+ * affichage de la pièce suivante
+ * mise à jour du score
  */
 public class PanneauInformationTest {
 
@@ -27,7 +27,7 @@ public class PanneauInformationTest {
     }
 
     /**
-     * Vérifie que la mise à jour du score modifie bien les labels dans le panneau.
+     * Vérifie que la mise à jour du score modifie bien les labels dans le panneau
      */
     @Test
     public void testMiseAJourScore() {
@@ -51,7 +51,7 @@ public class PanneauInformationTest {
     }
 
     /**
-     * Vérifie que l'affichage de la pièce suivante met bien à jour les éléments du panneau.
+     * Vérifie que l'affichage de la pièce suivante met bien à jour les éléments du panneau
      */
     @Test
     public void testAffichagePieceSuivante() {

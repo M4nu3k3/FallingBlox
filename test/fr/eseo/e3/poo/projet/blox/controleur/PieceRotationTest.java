@@ -7,8 +7,7 @@ import fr.eseo.e3.poo.projet.blox.vue.VuePuits;
 import javax.swing.*;
 
 /**
- * Classe de test pour afficher un puits et tester la rotation des pièces
- * via les événements de la souris (clic gauche/droit)
+ * Classe de test pour afficher un puits et tester la rotation des pièces via souris et clavier
  */
 public class PieceRotationTest {
 
@@ -52,7 +51,7 @@ public class PieceRotationTest {
     }
 
     /**
-     * Point d'entrée du test
+     * Test
      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(PieceRotationTest::new);

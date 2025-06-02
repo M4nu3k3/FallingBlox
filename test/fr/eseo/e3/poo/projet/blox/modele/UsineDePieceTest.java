@@ -6,7 +6,7 @@ import org.junit.jupiter.api.RepeatedTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Classe de tests pour valider la génération de pièces via l'UsineDePiece.
+ * Classe de tests pour valider la génération de pièces via l'UsineDePiece
  */
 public class UsineDePieceTest {
 

@@ -14,12 +14,12 @@ import java.awt.image.BufferedImage;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Classe de tests pour la classe VuePiece (affichage graphique d’une pièce).
+ * Classe de tests pour la classe VuePiece
  */
 public class VuePieceTest {
 
     /**
-     * Vérifie que la méthode teinte() applique un éclaircissement à une couleur.
+     * Vérifie que la méthode teinte() applique un éclaircissement à une couleur
      */
     @Test
     public void testTeinte() {
@@ -32,7 +32,7 @@ public class VuePieceTest {
     }
 
     /**
-     * Vérifie que l’affichage de la pièce ne jette aucune exception dans un Graphics2D.
+     * Vérifie que l’affichage de la pièce ne jette aucune exception
      */
     @Test
     public void testAfficherPieceSansErreur() {
@@ -51,7 +51,7 @@ public class VuePieceTest {
     }
 
     /**
-     * Vérifie que les couleurs pivot et non pivot sont bien différentes après affichage.
+     * Vérifie que les couleurs pivot et non pivot sont bien différentes après affichage
      */
     @Test
     public void testAffichageAvecPivotColorie() {
@@ -70,7 +70,7 @@ public class VuePieceTest {
     }
 
     /**
-     * Vérifie que le constructeur initialise correctement la pièce et la taille.
+     * Vérifie que le constructeur initialise correctement la pièce et la taille
      */
     @Test
     public void testConstructeurVuePiece() {

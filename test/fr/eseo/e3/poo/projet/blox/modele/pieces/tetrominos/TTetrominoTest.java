@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Classe de test unitaire pour la pièce TTetromino (forme en T).
+ * Classe de test unitaire pour la pièce TTetromino
  */
 public class TTetrominoTest {
 
     /**
-     * Vérifie que la pièce T contient bien 4 éléments.
+     * Vérifie que la pièce contient bien 4 éléments
      */
     @Test
     public void testNombreDElements() {
@@ -23,7 +23,7 @@ public class TTetrominoTest {
     }
 
     /**
-     * Vérifie les coordonnées initiales de la pièce en position par défaut.
+     * Vérifie les coordonnées initiales de la pièce en position par défaut
      */
     @Test
     public void testCoordonneesInitiales() {
@@ -39,7 +39,7 @@ public class TTetrominoTest {
     }
 
     /**
-     * Vérifie que tous les éléments de la pièce ont la couleur attendue.
+     * Vérifie que tous les éléments de la pièce ont la couleur attendue
      */
     @Test
     public void testCouleurElements() {
@@ -50,10 +50,10 @@ public class TTetrominoTest {
     }
 
     /**
-     * Vérifie qu’un déplacement valide fonctionne correctement.
+     * Vérifie qu’un déplacement valide fonctionne correctement
      */
     /**
-     * Vérifie que la pièce T peut se déplacer vers la droite et vers le bas dans le puits.
+     * Vérifie que la pièce peut se déplacer vers la droite et vers le bas dans le puits
      */
     @Test
     public void testDeplacementValide() throws BloxException {
@@ -88,7 +88,7 @@ public class TTetrominoTest {
     }
 
     /**
-     * Vérifie qu’un déplacement invalide génère une IllegalArgumentException.
+     * Vérifie qu’un déplacement invalide génère une IllegalArgumentException
      */
     @Test
     public void testDeplacementInvalide() {
@@ -99,7 +99,7 @@ public class TTetrominoTest {
     }
 
     /**
-     * Vérifie qu’une rotation horaire puis antihoraire ramène à la position initiale.
+     * Vérifie qu’une rotation horaire puis antihoraire ramène à la position initiale
      */
     @Test
     public void testRotationReversible() throws BloxException {
@@ -123,7 +123,7 @@ public class TTetrominoTest {
     }
 
     /**
-     * Vérifie qu’une rotation hors limites du puits lève une BloxException.
+     * Vérifie qu’une rotation hors limites du puits lève une BloxException
      */
     @Test
     public void testRotationSortiePuits() {
@@ -136,7 +136,7 @@ public class TTetrominoTest {
     }
 
     /**
-     * Vérifie que la collision lors de la rotation déclenche une BloxException.
+     * Vérifie que la collision lors de la rotation déclenche une BloxException
      */
     @Test
     public void testRotationCollisionTas() {

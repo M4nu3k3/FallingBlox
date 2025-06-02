@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Classe de tests unitaires pour la pièce ZTetromino.
+ * Classe de tests unitaires pour la pièce ZTetromino
  */
 public class ZTetrominoTest {
 
     /**
-     * Vérifie que la pièce Z contient bien 4 éléments.
+     * Vérifie que la pièce contient bien 4 éléments
      */
     @Test
     public void testNombreDElements() {
@@ -23,7 +23,7 @@ public class ZTetrominoTest {
     }
 
     /**
-     * Vérifie les coordonnées initiales relatives à la pièce.
+     * Vérifie les coordonnées initiales relatives à la pièce
      */
     @Test
     public void testCoordonneesInitiales() {
@@ -39,7 +39,7 @@ public class ZTetrominoTest {
     }
 
     /**
-     * Vérifie que tous les éléments ont bien la couleur définie.
+     * Vérifie que tous les éléments ont bien la couleur définie
      */
     @Test
     public void testCouleurElements() {
@@ -50,7 +50,7 @@ public class ZTetrominoTest {
     }
 
     /**
-     * Vérifie un déplacement valide de la pièce dans un puits.
+     * Vérifie un déplacement valide de la pièce dans un puits
      */
     @Test
     public void testDeplacementValide() throws BloxException {
@@ -74,7 +74,7 @@ public class ZTetrominoTest {
     }
 
     /**
-     * Vérifie que des déplacements invalides lèvent une IllegalArgumentException.
+     * Vérifie que des déplacements invalides lèvent une IllegalArgumentException
      */
     @Test
     public void testDeplacementInvalide() {
@@ -85,7 +85,7 @@ public class ZTetrominoTest {
     }
 
     /**
-     * Vérifie qu'une sortie du puits déclenche une BloxException.
+     * Vérifie qu'une sortie du puits déclenche une BloxException
      */
     @Test
     public void testSortiePuits() {
@@ -98,7 +98,7 @@ public class ZTetrominoTest {
     }
 
     /**
-     * Vérifie qu'une collision avec un tas empêche le déplacement.
+     * Vérifie qu'une collision avec un tas empêche le déplacement
      */
     @Test
     public void testCollisionAvecTas() {
@@ -115,7 +115,7 @@ public class ZTetrominoTest {
     }
 
     /**
-     * Vérifie qu'une rotation complète (4 fois) restitue la forme d'origine.
+     * Vérifie qu'une rotation complète (4 fois) restitue la forme d'origine
      */
     @Test
     public void testRotationComplete() throws BloxException {
@@ -140,7 +140,7 @@ public class ZTetrominoTest {
     }
 
     /**
-     * Vérifie qu’une tentative de rotation entraînant une collision lève une exception.
+     * Vérifie qu’une tentative de rotation entraînant une collision lève une exception
      */
     @Test
     public void testRotationCollisionTas() {

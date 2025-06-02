@@ -9,7 +9,7 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Classe de tests pour valider les fonctionnalités de la classe Tas.
+ * Classe de tests pour valider les fonctionnalités de la classe Tas
  */
 public class TasTest {
 

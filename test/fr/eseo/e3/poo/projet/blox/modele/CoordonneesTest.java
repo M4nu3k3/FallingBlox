@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Classe de test JUnit pour la classe Coordonnees.
+ * Classe de test JUnit pour la classe Coordonnees
  */
 public class CoordonneesTest {
 

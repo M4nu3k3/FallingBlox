@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ITetrominoTest {
 
     /**
-     * Vérifie que la pièce I contient bien 4 éléments
+     * Vérifie que la pièce contient bien 4 éléments
      */
     @Test
     public void testNombreDElements() {
@@ -23,7 +23,7 @@ public class ITetrominoTest {
     }
 
     /**
-     * Vérifie les coordonnées initiales de la pièce I
+     * Vérifie les coordonnées initiales de la pièce
      */
     @Test
     public void testCoordonneesInitiales() {
@@ -106,7 +106,7 @@ public class ITetrominoTest {
     }
 
     /**
-     * Vérifie que 4 rotations horaires ramènent la pièce à sa forme initiale (verticale)
+     * Vérifie que 4 rotations horaires ramènent la pièce à sa forme initiale
      */
     @Test
     public void testRotationHoraire360() throws BloxException {

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Classe de test unitaire pour la classe Element.
+ * Classe de test unitaire pour la classe Element
  */
 public class ElementTest {
 

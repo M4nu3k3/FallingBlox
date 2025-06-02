@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class JTetrominoTest {
 
     /**
-     * Vérifie que la pièce J est correctement constituée de 4 éléments.
+     * Vérifie que la pièce est correctement constituée de 4 éléments.
      */
     @Test
     public void testNombreDElements() {
@@ -39,7 +39,7 @@ public class JTetrominoTest {
     }
 
     /**
-     * Vérifie que les couleurs des éléments sont toutes identiques à celle spécifiée.
+     * Vérifie que les couleurs des éléments sont toutes identiques à celle spécifiée
      */
     @Test
     public void testCouleurElements() {
@@ -50,7 +50,7 @@ public class JTetrominoTest {
     }
 
     /**
-     * Vérifie un déplacement horizontal et vertical sans collision.
+     * Vérifie un déplacement horizontal et vertical sans collision
      */
     @Test
     public void testDeplacementValide() throws BloxException {
@@ -74,7 +74,7 @@ public class JTetrominoTest {
     }
 
     /**
-     * Vérifie que les déplacements interdits lèvent une IllegalArgumentException.
+     * Vérifie que les déplacements interdits lèvent une IllegalArgumentException
      */
     @Test
     public void testDeplacementInvalide() {
@@ -85,7 +85,7 @@ public class JTetrominoTest {
     }
 
     /**
-     * Vérifie qu'une collision avec un tas lève une BloxException.
+     * Vérifie qu'une collision avec un tas lève une BloxException
      */
     @Test
     public void testCollisionAvecTas() {
@@ -102,7 +102,7 @@ public class JTetrominoTest {
     }
 
     /**
-     * Vérifie qu'une sortie du puits déclenche une exception.
+     * Vérifie qu'une sortie du puits déclenche une exception
      */
     @Test
     public void testSortiePuits() {
@@ -115,7 +115,7 @@ public class JTetrominoTest {
     }
 
     /**
-     * Vérifie que quatre rotations ramènent la pièce à sa forme initiale.
+     * Vérifie que quatre rotations ramènent la pièce à sa forme initiale
      */
     @Test
     public void testRotationComplete() throws BloxException {
@@ -140,7 +140,7 @@ public class JTetrominoTest {
     }
 
     /**
-     * Vérifie qu'une tentative de rotation avec collision génère une BloxException.
+     * Vérifie qu'une tentative de rotation avec collision génère une BloxException
      */
     @Test
     public void testRotationCollisionTas() {

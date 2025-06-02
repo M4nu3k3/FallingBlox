@@ -14,13 +14,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Classe de tests unitaires pour la classe VueTas.
- * Elle valide que le tas est affichable sans erreur et que la construction
- * de la classe VueTas est correcte.
  */
 public class VueTasTest {
 
     /**
-     * Vérifie que la création d’un objet VueTas est fonctionnelle.
+     * Vérifie que la création d’un objet VueTas est fonctionnelle
      */
     @Test
     public void testConstructeur() {
@@ -32,7 +30,6 @@ public class VueTasTest {
 
     /**
      * Vérifie que la méthode afficher() ne déclenche aucune exception
-     * lors de l'affichage avec un Graphics2D simulé.
      */
     @Test
     public void testAfficherTas() {
@@ -50,9 +47,7 @@ public class VueTasTest {
     }
 
     /**
-     * Vérifie que l’on peut modifier la taille de VueTas dynamiquement.
-     * Ici, on ne peut pas tester getTaille() car il n’existe pas de getter exposé.
-     * On vérifie donc via l’absence d’exception et l’effet de bord indirect.
+     * Vérifie que l’on peut modifier la taille de VueTas dynamiquement
      */
     @Test
     public void testSetTaille() {

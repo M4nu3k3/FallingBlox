@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Classe de test unitaire pour la classe BloxException.
+ * Classe de test unitaire pour la classe BloxException
  */
 public class BloxExceptionTest {
 
     /**
-     * Vérifie que le message est correctement transmis au constructeur.
+     * Vérifie que le message est correctement transmis au constructeur
      */
     @Test
     public void testMessageEtCode() {
@@ -24,7 +24,7 @@ public class BloxExceptionTest {
     }
 
     /**
-     * Vérifie la constante BLOX_SORTIE_PUITS.
+     * Vérifie la constante BLOX_SORTIE_PUITS
      */
     @Test
     public void testCodeSortiePuits() {

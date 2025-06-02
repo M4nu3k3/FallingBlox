@@ -7,7 +7,7 @@ import fr.eseo.e3.poo.projet.blox.vue.VuePuits;
 import javax.swing.*;
 
 /**
- * Classe de test pour vérifier les déplacements d'une pièce à l'aide de la souris.
+ * Classe de test pour vérifier les déplacements d'une pièce à l'aide de la souris et du clavier
  */
 public class PieceDeplacementTest {
 
@@ -51,7 +51,7 @@ public class PieceDeplacementTest {
     }
 
     /**
-     * Point d'entrée du programme.
+     * Test
      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(PieceDeplacementTest::new);

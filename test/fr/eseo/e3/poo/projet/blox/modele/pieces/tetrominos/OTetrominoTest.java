@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Classe de test unitaire pour la pièce OTetromino (pièce carrée 2x2).
+ * Classe de test unitaire pour la pièce OTetromino
  */
 public class OTetrominoTest {
 
     /**
-     * Vérifie que la pièce contient bien 4 éléments.
+     * Vérifie que la pièce contient bien 4 éléments
      */
     @Test
     public void testNombreDElements() {
@@ -23,7 +23,7 @@ public class OTetrominoTest {
     }
 
     /**
-     * Vérifie les coordonnées initiales et la couleur des éléments.
+     * Vérifie les coordonnées initiales et la couleur des éléments
      */
     @Test
     public void testCoordonneesInitialesEtCouleur() {
@@ -41,7 +41,7 @@ public class OTetrominoTest {
     }
 
     /**
-     * Vérifie le déplacement valide dans un puits.
+     * Vérifie le déplacement valide dans un puits
      */
     @Test
     public void testDeplacementValide() throws BloxException {
@@ -60,7 +60,7 @@ public class OTetrominoTest {
     }
 
     /**
-     * Vérifie que les déplacements invalides génèrent une IllegalArgumentException.
+     * Vérifie que les déplacements invalides génèrent une IllegalArgumentException
      */
     @Test
     public void testDeplacementInvalideIllegalArgument() {
@@ -74,7 +74,7 @@ public class OTetrominoTest {
     }
 
     /**
-     * Vérifie qu'une sortie du puits déclenche une exception.
+     * Vérifie qu'une sortie du puits déclenche une exception
      */
     @Test
     public void testSortiePuitsDeclencheException() {
@@ -86,7 +86,7 @@ public class OTetrominoTest {
     }
 
     /**
-     * Vérifie qu'une collision avec une pièce déjà présente déclenche une exception.
+     * Vérifie qu'une collision avec une pièce déjà présente déclenche une exception
      */
     @Test
     public void testCollisionDeclencheException() {
@@ -101,7 +101,7 @@ public class OTetrominoTest {
     }
 
     /**
-     * Vérifie que les rotations d'un OTetromino ne modifient pas ses coordonnées.
+     * Vérifie que les rotations d'un OTetromino ne modifient pas ses coordonnées
      */
     @Test
     public void testRotationInerte() throws BloxException {

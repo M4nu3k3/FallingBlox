@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Classe de tests unitaires pour la pièce STetromino.
+ * Classe de tests unitaires pour la pièce STetromino
  */
 public class STetrominoTest {
 
     /**
-     * Vérifie que la pièce S est composée de 4 éléments.
+     * Vérifie que la pièce S est composée de 4 éléments
      */
     @Test
     public void testNombreDElements() {
@@ -23,7 +23,7 @@ public class STetrominoTest {
     }
 
     /**
-     * Vérifie les coordonnées initiales relatives à la pièce.
+     * Vérifie les coordonnées initiales relatives à la pièce
      */
     @Test
     public void testCoordonneesInitiales() {
@@ -39,7 +39,7 @@ public class STetrominoTest {
     }
 
     /**
-     * Vérifie la bonne propagation de la couleur à tous les éléments.
+     * Vérifie la bonne propagation de la couleur à tous les éléments
      */
     @Test
     public void testCouleurElements() {
@@ -50,7 +50,7 @@ public class STetrominoTest {
     }
 
     /**
-     * Vérifie un déplacement valide dans un puits.
+     * Vérifie un déplacement valide dans un puits
      */
     @Test
     public void testDeplacementValide() throws BloxException {
@@ -74,7 +74,7 @@ public class STetrominoTest {
     }
 
     /**
-     * Vérifie que les déplacements invalides déclenchent une exception.
+     * Vérifie que les déplacements invalides déclenchent une exception
      */
     @Test
     public void testDeplacementInvalide() {
@@ -85,7 +85,7 @@ public class STetrominoTest {
     }
 
     /**
-     * Vérifie qu'une collision avec un tas lève une BloxException.
+     * Vérifie qu'une collision avec un tas lève une BloxException
      */
     @Test
     public void testCollisionAvecTas() {
@@ -102,7 +102,7 @@ public class STetrominoTest {
     }
 
     /**
-     * Vérifie qu'une sortie du puits déclenche une exception.
+     * Vérifie qu'une sortie du puits déclenche une exception
      */
     @Test
     public void testSortiePuits() {
@@ -115,7 +115,7 @@ public class STetrominoTest {
     }
 
     /**
-     * Vérifie qu'une rotation complète (4x) restitue la forme initiale.
+     * Vérifie qu'une rotation complète (4x) restitue la forme initiale
      */
     @Test
     public void testRotationComplete() throws BloxException {
@@ -140,7 +140,7 @@ public class STetrominoTest {
     }
 
     /**
-     * Vérifie qu'une rotation en collision déclenche une BloxException.
+     * Vérifie qu'une rotation en collision déclenche une BloxException
      */
     @Test
     public void testRotationCollision() {

@@ -7,7 +7,7 @@ import java.awt.Color;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Classe de test unitaire pour l'enum Couleur.
+ * Classe de test unitaire pour l'enum Couleur
  */
 public class CouleurTest {
 

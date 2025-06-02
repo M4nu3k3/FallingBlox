@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Classe de test JUnit pour le comportement de la pièce LTetromino.
+ * Classe de test JUnit pour le comportement de la pièce LTetromino
  */
 public class LTetrominoTest {
 
