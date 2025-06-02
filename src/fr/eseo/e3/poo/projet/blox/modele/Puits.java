@@ -116,14 +116,6 @@ public class Puits {
 
     public void setPieceSuivante(Piece piece) {
         Piece ancienne = this.pieceSuivante;
-
-        if (this.pieceSuivante != null) {
-            setPieceActuelle(this.pieceSuivante);
-        } else if (this.pieceActuelle == null && piece != null) {
-            setPieceActuelle(piece);
-            piece = null;
-        }
-
         this.pieceSuivante = piece;
 
         if (this.pieceSuivante != null) {
@@ -154,18 +146,25 @@ public class Puits {
 
     private void gererCollision() {
         tas.ajouterElements(pieceActuelle);
-        int lignesSupprimees = tas.detecterEtSupprimerLignesComplete();
+        tas.detecterEtSupprimerLignesComplete();
 
-        if (tas.detecterCollisionHaut(pieceActuelle)) {
-            this.partieTerminee = true;
-            pcs.firePropertyChange(FIN_PARTIE, false, true);
+        if (!partieTerminee) {
+            if (pieceSuivante == null) {
+                setPieceActuelle(UsineDePiece.genererPiece());
+            } else {
+                setPieceActuelle(pieceSuivante);
+                setPieceSuivante(UsineDePiece.genererPiece());
+            }
+
+            if (tas.contient(pieceActuelle)) {
+                setPartieTerminee(true);
+            }
         }
-
-        setPieceActuelle(pieceSuivante);
-        setPieceSuivante(UsineDePiece.genererPiece());
     }
 
     public void gravite() throws BloxException {
+        if (partieTerminee) return;
+
         if (pieceActuelle != null) {
             try {
                 pieceActuelle.deplacerDe(0, 1);
@@ -180,8 +179,24 @@ public class Puits {
         return this.partieTerminee;
     }
 
+    public void setPartieTerminee(boolean terminee) {
+        boolean ancien = this.partieTerminee;
+        this.partieTerminee = terminee;
+        pcs.firePropertyChange(FIN_PARTIE, ancien, terminee);
+    }
+
     public void firePropertyChange(String nom, boolean ancien, boolean nouveau) {
         pcs.firePropertyChange(nom, ancien, nouveau);
+    }
+
+    public void reset() {
+        this.pieceActuelle = null;
+        this.pieceSuivante = null;
+        this.pieces.clear();
+        this.tas = new Tas(this);
+        setPartieTerminee(false);
+        setPieceActuelle(UsineDePiece.genererPiece());
+        setPieceSuivante(UsineDePiece.genererPiece());
     }
 
     @Override

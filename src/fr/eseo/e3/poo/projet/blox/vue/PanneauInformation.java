@@ -8,45 +8,49 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-/**
- * Panneau d'information affichant la prochaine pièce à jouer.
- */
 public class PanneauInformation extends JPanel implements PropertyChangeListener {
 
     public static final int TAILLE_PAR_DEFAUT = 70;
 
     private VuePiece vuePiece;
+    private Puits puits;
 
-    /**
-     * Crée un panneau d'information lié au puits.
-     */
     public PanneauInformation(Puits puits) {
-        puits.addPropertyChangeListener(this);
+        this.puits = puits;
+        this.puits.addPropertyChangeListener(this);
         this.setPreferredSize(new Dimension(TAILLE_PAR_DEFAUT, TAILLE_PAR_DEFAUT));
     }
 
-    /**
-     * Écoute les changements de pièce suivante dans le puits.
-     */
+    public void setPuits(Puits puits) {
+        if (this.puits != null) {
+            this.puits.removePropertyChangeListener(this);
+        }
+        this.puits = puits;
+        this.puits.addPropertyChangeListener(this);
+        this.vuePiece = null;
+        repaint();
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (Puits.MODIFICATION_PIECE_SUIVANTE.equals(evt.getPropertyName())) {
             Piece nouvellePiece = (Piece) evt.getNewValue();
-            this.vuePiece = new VuePiece(nouvellePiece, TAILLE_PAR_DEFAUT / 3); // Ajustement pour la taille du panneau
+            if (nouvellePiece != null) {
+                this.vuePiece = new VuePiece(nouvellePiece, TAILLE_PAR_DEFAUT / 3);
+            } else {
+                this.vuePiece = null;
+            }
             repaint();
         }
     }
 
-    /**
-     * Dessine le panneau d'information.
-     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         if (vuePiece != null) {
             Graphics2D g2D = (Graphics2D) g.create();
-            g2D.translate(10, 10); // Décalage pour marges visuelles
+            g2D.translate(10, 10);
             vuePiece.afficherPiece(g2D);
             g2D.dispose();
         }

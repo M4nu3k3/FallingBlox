@@ -16,6 +16,7 @@ public class Gravite implements ActionListener {
     public Gravite(VuePuits vuePuits, int periodeMs) {
         this.vuePuits = vuePuits;
         this.timer = new Timer(periodeMs, this);
+        this.timer.setInitialDelay(periodeMs); // pour éviter le saut immédiat au début
         this.timer.start();
     }
 
@@ -32,7 +33,13 @@ public class Gravite implements ActionListener {
     }
 
     public void start() {
-        this.timer.start();
+        if (!this.timer.isRunning()) {
+            this.timer.restart(); // utilise restart pour redémarrer proprement avec délai
+        }
+    }
+
+    public boolean isRunning() {
+        return this.timer.isRunning();
     }
 
     @Override
@@ -40,7 +47,7 @@ public class Gravite implements ActionListener {
         Puits puits = vuePuits.getPuits();
 
         if (puits.isPartieTerminee()) {
-            this.timer.stop();
+            stop();
             return;
         }
 
@@ -48,7 +55,7 @@ public class Gravite implements ActionListener {
             try {
                 puits.gravite();
             } catch (BloxException ex) {
-                // Exception attendue à la fin de la chute
+                // Fin de chute de la pièce actuelle
             }
             vuePuits.repaint();
         }

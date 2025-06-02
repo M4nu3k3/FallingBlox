@@ -33,7 +33,10 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
     public VuePuits(Puits puits, int taille) {
         this.puits = puits;
         this.taille = taille;
+        initialiser();
+    }
 
+    private void initialiser() {
         this.vuePiece = null;
         this.vueTas = new VueTas(puits, taille);
 
@@ -50,6 +53,7 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
 
         this.clavier = new Clavier(puits, this);
         this.addKeyListener(clavier);
+
         setFocusable(true);
         requestFocusInWindow();
 
@@ -57,10 +61,8 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         setBackground(Color.WHITE);
     }
 
-    public void demarrerGravite(int periode) {
-        if (this.gravite == null) {
-            this.gravite = new Gravite(this, periode);
-        }
+    public void setGravite(Gravite gravite) {
+        this.gravite = gravite;
     }
 
     public Gravite getGravite() {
@@ -82,22 +84,25 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         }
 
         this.puits = puits;
-        this.puits.setVuePuits(this);
-        this.puits.addPropertyChangeListener(this);
-
+        this.vuePiece = null;
         this.vueTas = new VueTas(puits, taille);
+
         this.pieceDeplacement = new PieceDeplacement(puits, this);
         this.pieceRotation = new PieceRotation(this);
+        this.clavier = new Clavier(puits, this);
+
+        this.puits.setVuePuits(this);
+        this.puits.addPropertyChangeListener(this);
 
         this.addMouseMotionListener(pieceDeplacement);
         this.addMouseListener(pieceDeplacement);
         this.addMouseWheelListener(pieceDeplacement);
         this.addMouseListener(pieceRotation);
-
-        this.clavier = new Clavier(puits, this);
         this.addKeyListener(clavier);
 
         repaint();
+        revalidate();
+        requestFocusInWindow();
     }
 
     public int getTaille() {
@@ -160,8 +165,12 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         if (Puits.MODIFICATION_PIECE_ACTUELLE.equals(evt.getPropertyName())) {
             Piece nouvellePiece = (Piece) evt.getNewValue();
-            this.setVuePiece(new VuePiece(nouvellePiece, this.taille));
-        } else if ("finPartie".equals(evt.getPropertyName())) {
+            if (nouvellePiece != null) {
+                this.setVuePiece(new VuePiece(nouvellePiece, this.taille));
+            } else {
+                this.setVuePiece(null);
+            }
+        } else if (Puits.FIN_PARTIE.equals(evt.getPropertyName())) {
             terminerPartie();
         }
     }
@@ -170,11 +179,13 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         if (gravite != null) {
             gravite.stop();
         }
+
         this.removeKeyListener(clavier);
         this.removeMouseListener(pieceDeplacement);
         this.removeMouseMotionListener(pieceDeplacement);
         this.removeMouseWheelListener(pieceDeplacement);
         this.removeMouseListener(pieceRotation);
+
         JOptionPane.showMessageDialog(this, "Fin de la partie", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
     }
 }

@@ -100,8 +100,11 @@ public class Tas {
             elements.add(new Element(coord, e.getCouleur()));
         }
 
-        if (detecterCollisionHaut(piece) && puits != null) {
-            puits.firePropertyChange("finPartie", false, true);
+        // Détection de collision haute (si un élément est en ligne 0)
+        if (detecterCollisionHaut(piece)) {
+            if (puits != null && !puits.isPartieTerminee()) {
+                puits.setPartieTerminee(true);
+            }
         }
     }
 
@@ -121,7 +124,7 @@ public class Tas {
             if (estLigneComplete(y)) {
                 supprimerLigne(y);
                 lignesSupprimees++;
-                y++;
+                y++; // Vérifie à nouveau cette ligne après décalage
             }
         }
 
