@@ -9,43 +9,51 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Classe de test JUnit pour le comportement de la pièce ITetromino.
+ * Tests unitaires pour la classe ITetromino.
  */
 public class ITetrominoTest {
 
-    // Vérifie que la pièce I contient bien 4 éléments
+    /**
+     * Vérifie que la pièce I contient bien 4 éléments.
+     */
     @Test
     public void testNombreDElements() {
         ITetromino piece = new ITetromino(Couleur.CYAN);
-        assertEquals(4, piece.getElements().size(), "Une pièce I doit contenir 4 éléments");
+        assertEquals(4, piece.getElements().size(), "Une pièce I doit contenir 4 éléments.");
     }
 
-    // Vérifie les coordonnées initiales des éléments de la pièce
+    /**
+     * Vérifie les coordonnées initiales de la pièce I.
+     */
     @Test
     public void testCoordonneesInitiales() {
         ITetromino piece = new ITetromino(Couleur.CYAN);
         List<Element> elements = piece.getElements();
 
         assertEquals(new Coordonnees(4, 0), elements.get(0).getCoordonnees());
-        assertEquals(new Coordonnees(4, 1), elements.get(1).getCoordonnees());
+        assertEquals(new Coordonnees(4, 1), elements.get(1).getCoordonnees()); // pivot
         assertEquals(new Coordonnees(4, 2), elements.get(2).getCoordonnees());
         assertEquals(new Coordonnees(4, 3), elements.get(3).getCoordonnees());
     }
 
-    // Vérifie que tous les éléments sont bien de la couleur donnée
+    /**
+     * Vérifie que tous les éléments ont la bonne couleur.
+     */
     @Test
-    public void testCouleur() {
+    public void testCouleurElements() {
         ITetromino piece = new ITetromino(Couleur.CYAN);
         for (Element e : piece.getElements()) {
             assertEquals(Couleur.CYAN, e.getCouleur());
         }
     }
 
-    // Vérifie le déplacement valide d'une pièce dans le puits
+    /**
+     * Vérifie le déplacement valide d'une pièce dans un puits.
+     */
     @Test
     public void testDeplacementValide() throws BloxException {
         Puits puits = new Puits(10, 20);
-        ITetromino piece = new ITetromino(Couleur.VERT);
+        ITetromino piece = new ITetromino(Couleur.BLEU);
         piece.setPuits(puits);
 
         piece.deplacerDe(1, 0); // droite
@@ -58,80 +66,87 @@ public class ITetrominoTest {
         assertEquals(new Coordonnees(5, 4), elements.get(3).getCoordonnees());
     }
 
-    // Vérifie que des déplacements invalides lancent une IllegalArgumentException
+    /**
+     * Vérifie que les déplacements invalides lèvent une IllegalArgumentException.
+     */
     @Test
-    public void testDeplacementInvalideIllegalArgument() {
-        ITetromino piece = new ITetromino(Couleur.ROUGE);
+    public void testDeplacementInvalide() {
+        ITetromino piece = new ITetromino(Couleur.JAUNE);
+
         assertThrows(IllegalArgumentException.class, () -> piece.deplacerDe(0, -1));
-        assertThrows(IllegalArgumentException.class, () -> piece.deplacerDe(2, 0));
         assertThrows(IllegalArgumentException.class, () -> piece.deplacerDe(1, 1));
+        assertThrows(IllegalArgumentException.class, () -> piece.deplacerDe(2, 0));
     }
 
-    // Vérifie que les collisions avec un tas génèrent une BloxException
+    /**
+     * Vérifie qu'une collision déclenche une BloxException.
+     */
     @Test
-    public void testBloxExceptionCollision() {
+    public void testCollisionAvecTas() {
         Puits puits = new Puits(10, 20);
         Tas tas = puits.getTas();
-        tas.ajouterPiece(new ITetromino(new Coordonnees(4, 4), Couleur.BLEU));
+        tas.ajouterPiece(new ITetromino(new Coordonnees(4, 4), Couleur.VERT));
 
-        ITetromino piece = new ITetromino(new Coordonnees(4, 3), Couleur.VERT);
+        ITetromino piece = new ITetromino(new Coordonnees(4, 3), Couleur.ROUGE);
         piece.setPuits(puits);
 
-        assertThrows(BloxException.class, () -> piece.deplacerDe(0, 1),
-                "Une collision avec le tas doit lever BloxException");
+        assertThrows(BloxException.class, () -> piece.deplacerDe(0, 1));
     }
 
-    // Vérifie que sortir des limites du puits génère une BloxException
+    /**
+     * Vérifie qu'une sortie du puits déclenche une BloxException.
+     */
     @Test
-    public void testBloxExceptionSortiePuits() {
+    public void testSortiePuitsDeclencheException() {
         Puits puits = new Puits(10, 20);
-        ITetromino piece = new ITetromino(new Coordonnees(0, 0), Couleur.VERT);
+        ITetromino piece = new ITetromino(new Coordonnees(0, 0), Couleur.ORANGE);
         piece.setPuits(puits);
 
-        assertThrows(BloxException.class, () -> piece.deplacerDe(-1, 0),
-                "Une sortie du puits à gauche doit lever BloxException");
+        assertThrows(BloxException.class, () -> piece.deplacerDe(-1, 0));
     }
 
-    // Vérifie que 4 rotations horaires ramènent la pièce à la position verticale initiale
+    /**
+     * Vérifie que 4 rotations horaires ramènent la pièce à sa forme initiale (verticale).
+     */
     @Test
-    public void testRotationHoraireForme() throws BloxException {
-        Puits puits = new Puits(10, 20);
-        ITetromino piece = new ITetromino(new Coordonnees(5, 5), Couleur.VERT);
-        piece.setPuits(puits);
-
-        for (int i = 0; i < 4; i++) {
-            piece.tourner(true); // sens horaire
-        }
-
-        List<Element> elements = piece.getElements();
-        boolean estVerticale = elements.stream()
-                .map(e -> e.getCoordonnees().getAbscisse())
-                .distinct()
-                .count() == 1;
-
-        assertTrue(estVerticale, "Après 4 rotations, la pièce I doit être verticale.");
-    }
-
-    // Vérifie que 4 rotations anti-horaires ramènent la pièce à sa forme initiale
-    @Test
-    public void testRotationAntiHoraire() throws BloxException {
+    public void testRotationHoraire360() throws BloxException {
         Puits puits = new Puits(10, 20);
         ITetromino piece = new ITetromino(new Coordonnees(5, 5), Couleur.BLEU);
         piece.setPuits(puits);
 
-        List<Coordonnees> initiales = piece.getElements().stream()
+        for (int i = 0; i < 4; i++) {
+            piece.tourner(true);
+        }
+
+        long abscissesDistinctes = piece.getElements().stream()
+                .map(e -> e.getCoordonnees().getAbscisse())
+                .distinct()
+                .count();
+
+        assertEquals(1, abscissesDistinctes, "La pièce doit être verticale après 4 rotations horaires.");
+    }
+
+    /**
+     * Vérifie que 4 rotations anti-horaires ramènent la pièce à sa position initiale.
+     */
+    @Test
+    public void testRotationAntiHoraire360() throws BloxException {
+        Puits puits = new Puits(10, 20);
+        ITetromino piece = new ITetromino(new Coordonnees(5, 5), Couleur.CYAN);
+        piece.setPuits(puits);
+
+        List<Coordonnees> coordInitiales = piece.getElements().stream()
                 .map(Element::getCoordonnees)
                 .collect(Collectors.toList());
 
         for (int i = 0; i < 4; i++) {
-            piece.tourner(false); // sens anti-horaire
+            piece.tourner(false);
         }
 
-        List<Coordonnees> apres360 = piece.getElements().stream()
+        List<Coordonnees> coordFinales = piece.getElements().stream()
                 .map(Element::getCoordonnees)
                 .collect(Collectors.toList());
 
-        assertEquals(initiales, apres360,
-                "Après 4 rotations anti-horaires, la pièce doit revenir à sa position initiale.");
+        assertEquals(coordInitiales, coordFinales, "Après 4 rotations antihoraires, la forme doit être identique.");
     }
 }

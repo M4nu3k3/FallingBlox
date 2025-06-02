@@ -7,47 +7,53 @@ import fr.eseo.e3.poo.projet.blox.vue.VuePuits;
 import javax.swing.*;
 
 /**
- * Classe de test pour afficher un puits et tester la rotation
- * des pièces via les événements de la souris (clic gauche/droit).
+ * Classe de test pour afficher un puits et tester la rotation des pièces
+ * via les événements de la souris (clic gauche/droit).
  */
 public class PieceRotationTest {
 
-    // Constructeur : lance automatiquement l'affichage du test
+    /**
+     * Constructeur du test : initialise et affiche la scène de test.
+     */
     public PieceRotationTest() {
         afficherPuitsAvecRotation();
     }
 
-    // Prépare l'affichage du puits et insère les pièces nécessaires
+    /**
+     * Prépare l'affichage du puits et ajoute les pièces nécessaires pour la rotation.
+     */
     private void afficherPuitsAvecRotation() {
-        // Initialisation du puits avec taille standard
+        // Initialisation du puits avec dimensions standards
         Puits puits = new Puits(10, 20);
 
-        // Création de la vue graphique associée au puits
+        // Préparation de la vue associée
         VuePuits vuePuits = new VuePuits(puits, VuePuits.TAILLE_PAR_DEFAUT);
 
-        // Mode TEST pour forcer la génération d’un ITetromino
+        // Mode TEST pour forcer une pièce connue (ITetromino)
         UsineDePiece.setMode(UsineDePiece.Mode.TEST);
 
-        // Insertion de la pièce actuelle avec position visible
-        puits.setPieceActuelle(UsineDePiece.genererPiece());
-        puits.getPieceActuelle().setPosition(5, 5);
+        // Insertion de la pièce actuelle
+        puits.setPieceActuelle(UsineDePiece.genererPiece(puits));
+        puits.getPieceActuelle().setPosition(4, 4);
 
-        // Définition de la pièce suivante (utile pour tests visuels)
-        puits.setPieceSuivante(UsineDePiece.genererPiece());
+        // Insertion d'une pièce suivante pour test visuel dans le panneau
+        puits.setPieceSuivante(UsineDePiece.genererPiece(puits));
 
-        // Création de la fenêtre d’affichage Swing
+        // Création de la fenêtre Swing
         JFrame frame = new JFrame("Test Rotation de Pièce");
         frame.setContentPane(vuePuits);
         frame.pack();
-        frame.setLocationRelativeTo(null); // Centrage
+        frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
-        // Mise au focus de la vue pour capter les événements souris
-        vuePuits.requestFocus();
+        // Donne le focus clavier à la vue
+        vuePuits.requestFocusInWindow();
     }
 
-    // Point d’entrée de l’application
+    /**
+     * Point d'entrée du test.
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(PieceRotationTest::new);
     }

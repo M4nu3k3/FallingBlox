@@ -104,6 +104,17 @@ public class Puits {
     public Piece getPieceSuivante() {
         return pieceSuivante;
     }
+    public void firePropertyChange(String nom, int ancien, int nouveau) {
+        pcs.firePropertyChange(nom, ancien, nouveau);
+    }
+    public void incrementerScorePourTest(int valeur) {
+        int ancien = this.score;
+        this.score += valeur;
+        if (this.score > this.meilleurScore) {
+            this.meilleurScore = this.score;
+        }
+        pcs.firePropertyChange("score", ancien, this.score);
+    }
 
     public void setPieceActuelle(Piece piece) {
         Piece ancienne = this.pieceActuelle;
