@@ -37,12 +37,15 @@ public class FallingBloxVersion1 {
             final Gravite[] graviteRef = new Gravite[] { new Gravite(vuePuitsRef[0], 500) };
             vuePuitsRef[0].setGravite(graviteRef[0]);
 
-            puits.setPieceActuelle(UsineDePiece.genererPiece());
-            puits.setPieceSuivante(UsineDePiece.genererPiece());
-
             final PanneauInformation panneauInfo = new PanneauInformation(puits);
             panneauInfo.setGravite(graviteRef[0]);
             panneauInfo.setVuePuits(vuePuitsRef[0]);
+
+            // Définir les pièces après que tous les écouteurs soient en place
+            puits.setPieceActuelle(UsineDePiece.genererPiece());
+            puits.setPieceSuivante(UsineDePiece.genererPiece());
+
+            graviteRef[0].start();
 
             panneauInfo.getBoutonRejouer().addActionListener(e -> {
                 graviteRef[0].stop();
@@ -52,12 +55,13 @@ public class FallingBloxVersion1 {
                 Gravite nouvelleGravite = new Gravite(nouvelleVue, graviteRef[0].getPeriode());
                 nouvelleVue.setGravite(nouvelleGravite);
 
+                PanneauInformation nouveauPanneau = panneauInfo;
                 nouveauPuits.setPieceActuelle(UsineDePiece.genererPiece());
                 nouveauPuits.setPieceSuivante(UsineDePiece.genererPiece());
 
-                panneauInfo.setPuits(nouveauPuits);
-                panneauInfo.setGravite(nouvelleGravite);
-                panneauInfo.setVuePuits(nouvelleVue);
+                nouveauPanneau.setPuits(nouveauPuits);
+                nouveauPanneau.setGravite(nouvelleGravite);
+                nouveauPanneau.setVuePuits(nouvelleVue);
 
                 Container parent = vuePuitsRef[0].getParent();
                 parent.remove(vuePuitsRef[0]);
@@ -67,6 +71,8 @@ public class FallingBloxVersion1 {
 
                 vuePuitsRef[0] = nouvelleVue;
                 graviteRef[0] = nouvelleGravite;
+
+                graviteRef[0].start();
                 vuePuitsRef[0].requestFocus();
             });
 
