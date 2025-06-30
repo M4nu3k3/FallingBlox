@@ -10,31 +10,84 @@ import java.awt.event.ActionListener;
 
 /**
  * Classe contrôleur responsable de l'application de la gravité sur la pièce actuelle
- * à intervalle régulier via un Timer Swing.
+ * à intervalle régulier via un Timer Swing. Le délai s’accélère progressivement dans le temps.
  */
 public class Gravite implements ActionListener {
 
-    /** Référence à la vue du puits pour obtenir le modèle et forcer le repaint. */
     private final VuePuits vuePuits;
-
-    /** Timer interne déclenchant l'action de gravité périodiquement. */
     private final Timer timer;
+    private final long tempsDepart;
+    private final int delaiInitial;
+    private final int delaiMin;
+    private int delaiActuel;
+    private final int accelerationInterval;
+    private final int accelerationStep;
 
     /**
-     * Construit un contrôleur de gravité.
+     * Construit un contrôleur de gravité avec accélération progressive.
      *
      * @param vuePuits  la vue graphique associée au puits
-     * @param periodeMs période entre chaque application de la gravité, en millisecondes
+     * @param periodeMs période de départ en millisecondes
      */
     public Gravite(VuePuits vuePuits, int periodeMs) {
         this.vuePuits = vuePuits;
-        this.timer = new Timer(periodeMs, this);
-        this.timer.setInitialDelay(periodeMs); // Délai initial pour éviter un déplacement immédiat
+        this.delaiInitial = periodeMs;
+        this.delaiActuel = periodeMs;
+        this.delaiMin = 100;
+        this.accelerationInterval = 10000; // toutes les 10 secondes
+        this.accelerationStep = 10;        // réduction de 10 ms à chaque étape
+        this.tempsDepart = System.currentTimeMillis();
+
+        this.timer = new Timer(delaiActuel, this);
+        this.timer.setInitialDelay(delaiActuel);
         this.timer.start();
+
+        vuePuits.setGravite(this);
     }
 
     /**
-     * Définit une nouvelle période de gravité.
+     * Met à jour dynamiquement la période du Timer si le temps écoulé dépasse un palier d'accélération.
+     */
+    private void mettreAJourDelai() {
+        long tempsEcoule = System.currentTimeMillis() - tempsDepart;
+        int niveaux = (int) (tempsEcoule / accelerationInterval);
+        int nouveauDelai = Math.max(delaiInitial - niveaux * accelerationStep, delaiMin);
+
+        if (nouveauDelai != delaiActuel) {
+            delaiActuel = nouveauDelai;
+            timer.setDelay(delaiActuel);
+        }
+    }
+
+    /**
+     * Action déclenchée à chaque tick du Timer : fait descendre la pièce actuelle si possible.
+     *
+     * @param e l'événement déclencheur
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Puits puits = vuePuits.getPuits();
+
+        if (puits.isPartieTerminee()) {
+            stop();
+            return;
+        }
+
+        mettreAJourDelai();
+
+        if (puits.getPieceActuelle() != null) {
+            try {
+                puits.gravite();
+            } catch (BloxException ex) {
+                // L’exception est ignorée
+            }
+
+            vuePuits.repaint();
+        }
+    }
+
+    /**
+     * Définit une nouvelle période de gravité manuellement.
      *
      * @param periodeMs la nouvelle période en millisecondes
      */
@@ -74,33 +127,5 @@ public class Gravite implements ActionListener {
      */
     public boolean isRunning() {
         return this.timer.isRunning();
-    }
-
-    /**
-     * Action déclenchée à chaque tick du Timer : fait descendre la pièce actuelle si possible.
-     *
-     * @param e l'événement déclencheur
-     */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        Puits puits = vuePuits.getPuits();
-
-        // Si la partie est finie, on arrête la gravité
-        if (puits.isPartieTerminee()) {
-            stop();
-            return;
-        }
-
-        // Applique la gravité sur la pièce courante si elle existe
-        if (puits.getPieceActuelle() != null) {
-            try {
-                puits.gravite();
-            } catch (BloxException ex) {
-                // Fin de chute de la pièce ou mouvement impossible : on ignore l’exception
-            }
-
-            // Rafraîchit l’affichage
-            vuePuits.repaint();
-        }
     }
 }
