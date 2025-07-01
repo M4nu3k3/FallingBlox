@@ -40,10 +40,8 @@ public class Clavier extends KeyAdapter {
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        // Ne rien faire si la partie est finie
         if (puits.isPartieTerminee()) return;
 
-        // Récupère la pièce actuelle
         Piece piece = puits.getPieceActuelle();
         if (piece == null) return;
 
@@ -52,28 +50,29 @@ public class Clavier extends KeyAdapter {
         try {
             switch (code) {
                 case KeyEvent.VK_LEFT:
-                    piece.deplacerDe(-1, 0);  // déplacement à gauche
+                    piece.deplacerDe(-1, 0);
                     break;
                 case KeyEvent.VK_RIGHT:
-                    piece.deplacerDe(1, 0);   // déplacement à droite
+                    piece.deplacerDe(1, 0);
                     break;
                 case KeyEvent.VK_UP:
-                    piece.tourner(true);     // rotation horaire
+                    piece.tourner(true);
                     break;
                 case KeyEvent.VK_DOWN:
-                    piece.tourner(false);    // rotation antihoraire
+                    piece.tourner(false);
                     break;
                 case KeyEvent.VK_SHIFT:
-                    puits.gravite();         // descente immédiate
+                    puits.gravite();
                     break;
                 default:
-                    break; // touche ignorée
+                    return;
             }
         } catch (BloxException ex) {
             // Mouvement non autorisé : on ignore
         }
 
-        // Rafraîchit l’affichage après l’action
+        // Synchronise la pièce fantôme après tout mouvement
+        vuePuits.mettreAJourFantome();
         vuePuits.repaint();
     }
 }

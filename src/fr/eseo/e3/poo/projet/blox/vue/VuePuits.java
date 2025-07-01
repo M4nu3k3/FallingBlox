@@ -13,10 +13,6 @@ import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-/**
- * Vue principale du puits
- * Gère l'affichage du puits, de la pièce actuelle, du tas et les interactions utilisateur
- */
 public class VuePuits extends JPanel implements PropertyChangeListener {
 
     public static final int TAILLE_PAR_DEFAUT = 20;
@@ -24,62 +20,45 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
     private Puits puits;
     private int taille;
     private VuePiece vuePiece;
+    private VuePieceFantome vueFantome;
     private VueTas vueTas;
     private Gravite gravite;
     private PieceDeplacement pieceDeplacement;
     private PieceRotation pieceRotation;
     private Clavier clavier;
 
-    /**
-     * Constructeur par défaut avec taille par défaut des cases
-     *
-     * @param puits modèle du puits de jeu
-     */
     public VuePuits(Puits puits) {
         this(puits, TAILLE_PAR_DEFAUT);
     }
 
-    /**
-     * Constructeur avec taille personnalisée des cases
-     *
-     * @param puits modèle du puits de jeu
-     * @param taille taille en pixels d’une case
-     */
     public VuePuits(Puits puits, int taille) {
         this.puits = puits;
         this.taille = taille;
         initialiser();
     }
 
-    /**
-     * Initialisation des composants graphiques et écouteurs
-     */
     private void initialiser() {
         this.vuePiece = null;
+        this.vueFantome = null;
         this.vueTas = new VueTas(puits, taille);
 
-        // Liaison modèle-vue
         puits.setVuePuits(this);
         puits.addPropertyChangeListener(this);
 
-        // Création des contrôleurs de la vue
         this.pieceDeplacement = new PieceDeplacement(puits, this);
         this.pieceRotation = new PieceRotation(this);
 
-        // Ajout des écouteurs souris
         this.addMouseMotionListener(pieceDeplacement);
         this.addMouseListener(pieceDeplacement);
         this.addMouseWheelListener(pieceDeplacement);
         this.addMouseListener(pieceRotation);
 
-        // Ajout écouteur clavier
         this.clavier = new Clavier(puits, this);
         this.addKeyListener(clavier);
 
         setFocusable(true);
         requestFocusInWindow();
 
-        // Taille préférée du composant
         setPreferredSize(new Dimension(puits.getLargeur() * taille, puits.getHauteur() * taille));
         setBackground(Color.WHITE);
     }
@@ -96,12 +75,6 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         return puits;
     }
 
-    /**
-     * Change le modèle du puits associé à la vue
-     * Retire les anciens écouteurs et en ajoute de nouveaux pour le nouveau modèle
-     *
-     * @param puits nouveau modèle du puits
-     */
     public void setPuits(Puits puits) {
         if (this.puits != null) {
             this.puits.removePropertyChangeListener(this);
@@ -114,6 +87,7 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
 
         this.puits = puits;
         this.vuePiece = null;
+        this.vueFantome = null;
         this.vueTas = new VueTas(puits, taille);
 
         this.pieceDeplacement = new PieceDeplacement(puits, this);
@@ -138,11 +112,6 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         return taille;
     }
 
-    /**
-     * Change la taille des cases, ajuste la taille préférée, met à jour la vue du tas
-     *
-     * @param taille nouvelle taille des cases en pixels
-     */
     public void setTaille(int taille) {
         this.taille = taille;
         setPreferredSize(new Dimension(puits.getLargeur() * taille, puits.getHauteur() * taille));
@@ -166,19 +135,32 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         return vueTas;
     }
 
-    /**
-     * Dessine le fond, la grille, le tas et la pièce actuelle
-     */
+    public void mettreAJourFantome() {
+        if (puits.getPieceActuelle() != null) {
+            Piece fantome = puits.getPieceActuelle().dupliquer();
+            fantome.setPuits(puits);
+            while (true) {
+                try {
+                    fantome.deplacerDe(0, 1);
+                } catch (Exception e) {
+                    break;
+                }
+            }
+            this.vueFantome = new VuePieceFantome(fantome, taille);
+        } else {
+            this.vueFantome = null;
+        }
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        mettreAJourFantome();
         Graphics2D g2D = (Graphics2D) g.create();
 
-        // Fond blanc
         g2D.setColor(Color.WHITE);
         g2D.fillRect(0, 0, getWidth(), getHeight());
 
-        // Grille du puits
         g2D.setColor(Color.LIGHT_GRAY);
         for (int i = 0; i <= puits.getLargeur(); i++) {
             int x = i * taille;
@@ -189,9 +171,11 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
             g2D.drawLine(0, y, puits.getLargeur() * taille, y);
         }
 
-        // Affichage du tas et de la pièce
         if (vueTas != null) {
             vueTas.afficher(g2D);
+        }
+        if (vueFantome != null) {
+            vueFantome.afficherPiece(g2D);
         }
         if (vuePiece != null) {
             vuePiece.afficherPiece(g2D);
@@ -200,11 +184,6 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         g2D.dispose();
     }
 
-    /**
-     * Réagit aux changements du modèle
-     *
-     * @param evt événement de changement
-     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (Puits.MODIFICATION_PIECE_ACTUELLE.equals(evt.getPropertyName())) {
@@ -219,10 +198,6 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         }
     }
 
-    /**
-     * Termine la partie en stoppant la gravité et en désactivant les contrôles
-     * Affiche un message de fin
-     */
     private void terminerPartie() {
         if (gravite != null) {
             gravite.stop();
@@ -237,9 +212,6 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         JOptionPane.showMessageDialog(this, "Fin de la partie", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    /**
-     * Déconnecte tous les écouteurs liés aux interactions utilisateur
-     */
     public void deconnectListeners() {
         this.removeMouseMotionListener(pieceDeplacement);
         this.removeMouseListener(pieceDeplacement);
@@ -248,9 +220,6 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         this.removeKeyListener(clavier);
     }
 
-    /**
-     * Reconnecte tous les écouteurs liés aux interactions utilisateur
-     */
     public void reconnectListeners() {
         this.addMouseMotionListener(pieceDeplacement);
         this.addMouseListener(pieceDeplacement);

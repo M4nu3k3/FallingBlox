@@ -13,8 +13,8 @@ public class VuePiece {
 
     public static final double MULTIPLIER_TEINTE = 0.3;
 
-    private final Piece piece;
-    private final int taille;
+    protected final Piece piece;
+    protected final int taille;
 
     /**
      * Crée une vue graphique pour une pièce avec une taille de case spécifiée

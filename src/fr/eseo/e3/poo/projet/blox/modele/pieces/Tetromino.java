@@ -1,6 +1,7 @@
 package fr.eseo.e3.poo.projet.blox.modele.pieces;
 
 import fr.eseo.e3.poo.projet.blox.modele.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,9 @@ public abstract class Tetromino implements Piece {
 
     protected final List<Element> elements = new ArrayList<>();
     protected Puits puits;
+    protected int abscisse;
+    protected int ordonnee;
+    protected int orientation = 0;
 
     /**
      * Constructeur : initialise la pièce à partir de coordonnées et d'une couleur.
@@ -49,6 +53,8 @@ public abstract class Tetromino implements Piece {
      * Réinitialise la forme de la pièce autour d’un nouveau pivot.
      */
     protected void setPosition(int abscisse, int ordonnee, Couleur couleur) {
+        this.abscisse = abscisse;
+        this.ordonnee = ordonnee;
         elements.clear();
         List<Coordonnees> coords = getFormeRelative(abscisse, ordonnee);
         for (Coordonnees c : coords) {
@@ -83,6 +89,9 @@ public abstract class Tetromino implements Piece {
         for (Element e : elements) {
             e.deplacerDe(dx, dy);
         }
+
+        abscisse += dx;
+        ordonnee += dy;
     }
 
     /**
@@ -102,7 +111,7 @@ public abstract class Tetromino implements Piece {
     public void tourner(boolean sensHoraire) throws BloxException {
         if (puits == null || elements.size() != 4) return;
 
-        Coordonnees pivot = elements.get(1).getCoordonnees(); // Pivot = 2e élément
+        Coordonnees pivot = elements.get(1).getCoordonnees();
         int px = pivot.getAbscisse();
         int py = pivot.getOrdonnee();
 
@@ -134,6 +143,8 @@ public abstract class Tetromino implements Piece {
         }
 
         miseAJourForme(nouvellesCoordonnees);
+
+        orientation = (orientation + (sensHoraire ? 1 : 3)) % 4;
     }
 
     /**
@@ -151,6 +162,30 @@ public abstract class Tetromino implements Piece {
             }
         }
         return true;
+    }
+
+    /**
+     * Crée une copie de la pièce, avec sa position, couleur et orientation.
+     *
+     * @return une nouvelle pièce identique mais indépendante
+     */
+    @Override
+    public Piece dupliquer() {
+        try {
+            Tetromino copie = this.getClass()
+                    .getDeclaredConstructor(Couleur.class)
+                    .newInstance(this.getCouleur());
+
+            copie.setPosition(this.abscisse, this.ordonnee);
+
+            for (int i = 0; i < this.orientation; i++) {
+                copie.tourner(true);
+            }
+
+            return copie;
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors de la duplication de la pièce", e);
+        }
     }
 
     /**

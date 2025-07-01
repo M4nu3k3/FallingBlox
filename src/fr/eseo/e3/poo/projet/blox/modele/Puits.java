@@ -228,6 +228,30 @@ public class Puits {
         setPieceSuivante(UsineDePiece.genererPiece());
     }
 
+    /**
+     * Calcule une copie de la pièce actuelle à sa position de chute maximale
+     * sans collision dans le tas ou sortie du puits.
+     *
+     * @return une nouvelle pièce représentant la position de chute
+     */
+    public Piece calculerPieceFantome() {
+        if (this.pieceActuelle == null)
+            return null;
+
+        Piece fantome = this.pieceActuelle.dupliquer();
+        fantome.setPuits(this); // pour que la méthode de collision fonctionne
+
+        while (true) {
+            try {
+                fantome.deplacerDe(0, 1);
+            } catch (BloxException e) {
+                break;
+            }
+        }
+
+        return fantome;
+    }
+
     // Affichage du contenu du puits
     @Override
     public String toString() {

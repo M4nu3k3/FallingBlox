@@ -27,4 +27,6 @@ public interface Piece {
     void setPuits(Puits puits);
 
     Puits getPuits();
+
+    Piece dupliquer();
 }

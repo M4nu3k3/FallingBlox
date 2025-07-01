@@ -63,6 +63,7 @@ public class PieceDeplacement implements MouseMotionListener, MouseListener, Mou
 
             try {
                 puits.getPieceActuelle().deplacerDe(delta, 0);
+                vuePuits.mettreAJourFantome();
                 vuePuits.repaint();
             } catch (BloxException | IllegalArgumentException ex) {
                 // Déplacement non possible : on ignore
@@ -83,6 +84,7 @@ public class PieceDeplacement implements MouseMotionListener, MouseListener, Mou
         if (puits.getPieceActuelle() != null && e.getWheelRotation() > 0) {
             try {
                 puits.getPieceActuelle().deplacerDe(0, 1);
+                vuePuits.mettreAJourFantome();
                 vuePuits.repaint();
             } catch (BloxException ex) {
                 // Collision ou bas du puits : on ignore
