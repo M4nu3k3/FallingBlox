@@ -5,8 +5,10 @@ import fr.eseo.e3.poo.projet.blox.modele.UsineDePiece;
 import fr.eseo.e3.poo.projet.blox.vue.PanneauInformation;
 import fr.eseo.e3.poo.projet.blox.vue.VuePuits;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 import static fr.eseo.e3.poo.projet.blox.modele.UsineDePiece.Mode.*;
 
@@ -14,6 +16,19 @@ public class FallingBloxVersion1 {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
+
+            // ajout musique
+            try {
+                Clip clip = AudioSystem.getClip();
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(
+                        FallingBloxVersion1.class.getResource("/fr/eseo/e3/poo/projet/blox/ressources/Instrumental.wav")
+                );
+                clip.open(audioStream);
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+                clip.start();
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                System.err.println("Erreur audio : " + e.getMessage());
+            }
 
             final UsineDePiece.Mode mode = ALEATOIRE;
             UsineDePiece.setMode(mode);
@@ -41,7 +56,6 @@ public class FallingBloxVersion1 {
             panneauInfo.setGravite(graviteRef[0]);
             panneauInfo.setVuePuits(vuePuitsRef[0]);
 
-            // Définir les pièces après que tous les écouteurs soient en place
             puits.setPieceActuelle(UsineDePiece.genererPiece());
             puits.setPieceSuivante(UsineDePiece.genererPiece());
 
