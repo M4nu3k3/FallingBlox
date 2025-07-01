@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Classe abstraite représentant un Tétromino du jeu Blox.
- * Implémente l'interface Piece et fournit les comportements communs.
+ * Classe abstraite représentant un Tétromino du jeu Blox
+ * Implémente l'interface Piece et fournit les comportements communs
  */
 public abstract class Tetromino implements Piece {
 
@@ -18,7 +18,7 @@ public abstract class Tetromino implements Piece {
     protected int orientation = 0;
 
     /**
-     * Constructeur : initialise la pièce à partir de coordonnées et d'une couleur.
+     * Constructeur
      */
     public Tetromino(Coordonnees coordonnees, Couleur couleur) {
         setPosition(coordonnees.getAbscisse(), coordonnees.getOrdonnee(), couleur);
@@ -50,7 +50,7 @@ public abstract class Tetromino implements Piece {
     }
 
     /**
-     * Réinitialise la forme de la pièce autour d’un nouveau pivot.
+     * Réinitialise la forme de la pièce autour d’un nouveau pivot
      */
     protected void setPosition(int abscisse, int ordonnee, Couleur couleur) {
         this.abscisse = abscisse;
@@ -63,7 +63,7 @@ public abstract class Tetromino implements Piece {
     }
 
     /**
-     * Déplace la pièce selon un vecteur (dx, dy), en vérifiant les collisions.
+     * Déplace la pièce en vérifiant les collisions
      */
     @Override
     public void deplacerDe(int dx, int dy) throws BloxException {
@@ -95,7 +95,7 @@ public abstract class Tetromino implements Piece {
     }
 
     /**
-     * Met à jour les coordonnées de chaque élément avec une nouvelle liste.
+     * Met à jour les coordonnées de chaque élément avec une nouvelle liste
      */
     protected void miseAJourForme(List<Coordonnees> nouvellesCoordonnees) {
         for (int i = 0; i < getElements().size(); i++) {
@@ -104,8 +104,8 @@ public abstract class Tetromino implements Piece {
     }
 
     /**
-     * Applique une rotation horaire ou antihoraire autour du pivot.
-     * Déclenche une exception si la rotation génère une collision ou une sortie du puits.
+     * Applique une rotation horaire ou antihoraire autour du pivot
+     * Déclenche une exception si la rotation génère une collision ou une sortie du puits
      */
     @Override
     public void tourner(boolean sensHoraire) throws BloxException {
@@ -148,7 +148,7 @@ public abstract class Tetromino implements Piece {
     }
 
     /**
-     * Indique si la pièce peut descendre sans collision.
+     * Indique si la pièce peut descendre sans collision
      */
     public boolean peutDescendre() {
         if (puits == null) return false;
@@ -165,9 +165,9 @@ public abstract class Tetromino implements Piece {
     }
 
     /**
-     * Crée une copie de la pièce, avec sa position, couleur et orientation.
+     * Crée une copie de la pièce, avec sa position, couleur et orientation
      *
-     * @return une nouvelle pièce identique mais indépendante
+     * @return une nouvelle pièce identique
      */
     @Override
     public Piece dupliquer() {
@@ -189,7 +189,7 @@ public abstract class Tetromino implements Piece {
     }
 
     /**
-     * Méthode à implémenter par les sous-classes pour définir la forme relative.
+     * Méthode à implémenter par les sous-classes pour définir la forme relative
      */
     protected abstract List<Coordonnees> getFormeRelative(int abscisse, int ordonnee);
 }

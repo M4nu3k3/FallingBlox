@@ -10,10 +10,12 @@ import java.awt.event.ActionListener;
 
 /**
  * Classe contrôleur responsable de l'application de la gravité sur la pièce actuelle
- * à intervalle régulier via un Timer Swing. Le délai s’accélère progressivement dans le temps.
+ * le délai s’accélère progressivement dans le temps
  */
 public class Gravite implements ActionListener {
 
+
+    //attributs
     private final VuePuits vuePuits;
     private final Timer timer;
     private final long tempsDepart;
@@ -23,12 +25,7 @@ public class Gravite implements ActionListener {
     private final int accelerationInterval;
     private final int accelerationStep;
 
-    /**
-     * Construit un contrôleur de gravité avec accélération progressive.
-     *
-     * @param vuePuits  la vue graphique associée au puits
-     * @param periodeMs période de départ en millisecondes
-     */
+    //constructeur
     public Gravite(VuePuits vuePuits, int periodeMs) {
         this.vuePuits = vuePuits;
         this.delaiInitial = periodeMs;
@@ -46,7 +43,7 @@ public class Gravite implements ActionListener {
     }
 
     /**
-     * Met à jour dynamiquement la période du Timer si le temps écoulé dépasse un palier d'accélération.
+     * Met à jour la période du Timer
      */
     private void mettreAJourDelai() {
         long tempsEcoule = System.currentTimeMillis() - tempsDepart;
@@ -60,9 +57,7 @@ public class Gravite implements ActionListener {
     }
 
     /**
-     * Action déclenchée à chaque tick du Timer : fait descendre la pièce actuelle si possible.
-     *
-     * @param e l'événement déclencheur
+     * Action déclenchée à chaque tick du Timer : fait descendre la pièce actuelle si possible
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -79,7 +74,7 @@ public class Gravite implements ActionListener {
             try {
                 puits.gravite();
             } catch (BloxException ex) {
-                // L’exception est ignorée
+                // exception est ignorée
             }
 
             vuePuits.repaint();
@@ -87,7 +82,7 @@ public class Gravite implements ActionListener {
     }
 
     /**
-     * Définit une nouvelle période de gravité manuellement.
+     * Définit une nouvelle période de gravité manuellement
      *
      * @param periodeMs la nouvelle période en millisecondes
      */
@@ -96,7 +91,7 @@ public class Gravite implements ActionListener {
     }
 
     /**
-     * Retourne la période actuelle de gravité.
+     * Retourne la période actuelle de gravité
      *
      * @return période en millisecondes
      */
@@ -105,14 +100,14 @@ public class Gravite implements ActionListener {
     }
 
     /**
-     * Arrête le Timer de gravité.
+     * Arrête le Timer de gravité
      */
     public void stop() {
         this.timer.stop();
     }
 
     /**
-     * Redémarre le Timer de gravité si ce n’est pas déjà le cas.
+     * Redémarre le Timer de gravité si ce n’est pas déjà le cas
      */
     public void start() {
         if (!this.timer.isRunning()) {
@@ -121,7 +116,7 @@ public class Gravite implements ActionListener {
     }
 
     /**
-     * Indique si le Timer de gravité est en cours d'exécution.
+     * Indique si le Timer de gravité est en cours d'exécution
      *
      * @return true si le Timer tourne, false sinon
      */

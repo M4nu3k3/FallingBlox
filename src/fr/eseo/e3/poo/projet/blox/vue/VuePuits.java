@@ -13,30 +13,49 @@ import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+/**
+ * Composant graphique principal représentant le puits de jeu
+ * Il gère l'affichage des pièces, du tas, de la pièce fantôme,
+ * et les interactions clavier/souris avec l'utilisateur
+ */
 public class VuePuits extends JPanel implements PropertyChangeListener {
 
     public static final int TAILLE_PAR_DEFAUT = 20;
 
     private Puits puits;
     private int taille;
+
     private VuePiece vuePiece;
     private VuePieceFantome vueFantome;
     private VueTas vueTas;
+
     private Gravite gravite;
     private PieceDeplacement pieceDeplacement;
     private PieceRotation pieceRotation;
     private Clavier clavier;
 
+    //  Constructeurs taille par défaut
     public VuePuits(Puits puits) {
         this(puits, TAILLE_PAR_DEFAUT);
     }
 
+    /**
+     * Crée une VuePuits avec une taille de case personnalisée
+     *
+     * @param puits le puits de jeu associé
+     * @param taille la taille des cases
+     */
     public VuePuits(Puits puits, int taille) {
         this.puits = puits;
         this.taille = taille;
         initialiser();
     }
 
+    // === Initialisation ===
+
+    /**
+     * Initialise les contrôleurs, les écouteurs et les vues*
+     */
     private void initialiser() {
         this.vuePiece = null;
         this.vueFantome = null;
@@ -63,6 +82,8 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         setBackground(Color.WHITE);
     }
 
+    // getter et setter
+
     public void setGravite(Gravite gravite) {
         this.gravite = gravite;
     }
@@ -75,6 +96,11 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         return puits;
     }
 
+    /**
+     * Change le puits associé à cette vue
+     *
+     * @param puits le nouveau puits
+     */
     public void setPuits(Puits puits) {
         if (this.puits != null) {
             this.puits.removePropertyChangeListener(this);
@@ -112,6 +138,11 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         return taille;
     }
 
+    /**
+     * Modifie la taille d'affichage des cases
+     *
+     * @param taille la nouvelle taille
+     */
     public void setTaille(int taille) {
         this.taille = taille;
         setPreferredSize(new Dimension(puits.getLargeur() * taille, puits.getHauteur() * taille));
@@ -122,19 +153,25 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         repaint();
     }
 
+    public VuePiece getVuePiece() {
+        return vuePiece;
+    }
+
     public void setVuePiece(VuePiece vuePiece) {
         this.vuePiece = vuePiece;
         repaint();
-    }
-
-    public VuePiece getVuePiece() {
-        return vuePiece;
     }
 
     public VueTas getVueTas() {
         return vueTas;
     }
 
+    // Affichage de la pièce fantôme
+
+    /**
+     * Calcule et met à jour la position de la pièce fantôme
+     * (position finale de chute)
+     */
     public void mettreAJourFantome() {
         if (puits.getPieceActuelle() != null) {
             Piece fantome = puits.getPieceActuelle().dupliquer();
@@ -184,6 +221,7 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         g2D.dispose();
     }
 
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (Puits.MODIFICATION_PIECE_ACTUELLE.equals(evt.getPropertyName())) {
@@ -198,6 +236,9 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Actions à effectuer en fin de partie
+     */
     private void terminerPartie() {
         if (gravite != null) {
             gravite.stop();
@@ -212,6 +253,11 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         JOptionPane.showMessageDialog(this, "Fin de la partie", "Partie terminée", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    // === Utilitaires pour réinitialisation ou pause ===
+
+    /**
+     * Supprime temporairement tous les listenner de cette vue
+     */
     public void deconnectListeners() {
         this.removeMouseMotionListener(pieceDeplacement);
         this.removeMouseListener(pieceDeplacement);
@@ -220,6 +266,9 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         this.removeKeyListener(clavier);
     }
 
+    /**
+     * Réactive tous les listenner précédemment associés à la vue
+     */
     public void reconnectListeners() {
         this.addMouseMotionListener(pieceDeplacement);
         this.addMouseListener(pieceDeplacement);

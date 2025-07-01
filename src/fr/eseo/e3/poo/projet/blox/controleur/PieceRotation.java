@@ -17,7 +17,7 @@ public class PieceRotation extends MouseAdapter {
     private final VuePuits vuePuits;
 
     /**
-     * Construit un contrôleur de rotation pour une vue du puits.
+     * Construit un contrôleur de rotation pour une vue du puits
      *
      * @param vuePuits la vue graphique du puits
      */
@@ -26,7 +26,7 @@ public class PieceRotation extends MouseAdapter {
     }
 
     /**
-     * Gère la rotation de la pièce via clic souris.
+     * Gère la rotation de la pièce via clic souris
      *
      * @param e l’événement souris
      */

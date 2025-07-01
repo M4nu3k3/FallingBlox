@@ -9,11 +9,11 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 /**
- * Chaque élément est dessiné avec une couleur assombrie pour effet visuel.
+ * Chaque élément est dessiné avec une couleur assombrie pour effet visuel
  */
 public class VueTas {
 
-    /** Coefficient pour assombrir la couleur (effet d’ombrage). */
+    /** Coefficient pour assombrir la couleur */
     public static final double MULTIPLIER_NUANCE = 0.3;
 
     private final Puits puits;
